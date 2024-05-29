@@ -2,35 +2,25 @@ package Ingredientes;
 
 public class Ingrediente
 {
-    private String tipo;
+    private TipoQueso queso;
     private double cantidad;
 
-    public Ingrediente()
-    {
-        tipo="";
-        cantidad=0;
-    }
-
-    public Ingrediente(String tipo, double cantidad) {
-        this.tipo = tipo;
+    public Ingrediente(TipoQueso queso, double cantidad) {
+        this.queso = queso;
         this.cantidad = cantidad;
     }
-
-    @Override
-    public String toString() {
-        return "Ingrediente{" +
-                "tipo='" + tipo + '\'' +
-                ", cantidad=" + cantidad +
-                '}';
+ // new Ingrediente(cheddar,20)
+    public Ingrediente() {
     }
 
     public double getCantidad() {
         return cantidad;
     }
 
-    public String getTipo() {
-        return tipo;
+    public TipoQueso getQueso() {
+        return queso;
     }
+
 
     public void calcularStock()
     {

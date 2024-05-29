@@ -8,6 +8,9 @@ public class Agregado
         this.bebida = bebida;
     }
 
+    public Agregado() {
+    }
+
     @Override
     public String toString() {
         return super.toString()+" Agregado{" +
