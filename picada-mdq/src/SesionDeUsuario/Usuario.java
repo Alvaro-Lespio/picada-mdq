@@ -20,8 +20,10 @@ public class Usuario extends Persona{
     }
 
     //Constructor completo
-    public Usuario(String nombre, String apellido, String direccion, String email, String nombreUsuario, String contrasenia, int puntos, double monto, Boolean isAdmin) {
-        super(nombre, apellido, direccion, email);
+
+
+    public Usuario(String nombre, String apellido, String calle, int numero, String email, String nombreUsuario, String contrasenia, int puntos, double monto, boolean isAdmin) {
+        super(nombre, apellido, calle, numero, email);
         this.nombreUsuario = nombreUsuario;
         this.contrasenia = contrasenia;
         this.puntos = puntos;
