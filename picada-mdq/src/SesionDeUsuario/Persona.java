@@ -1,18 +1,20 @@
 package SesionDeUsuario;
 
 public abstract class Persona {
+    //Atributos
     private String nombre;
     private String apellido;
     private String direccion;
     private String email;
 
-    public Persona() {
+    public Persona() {//Constructor vacio
         this.nombre = "";
         this.apellido = "";
         this.direccion = "";
         this.email = "";
     }
 
+    //Constructor completo
     public Persona(String nombre, String apellido, String direccion, String email) {
         this.nombre = nombre;
         this.apellido = apellido;
@@ -20,6 +22,7 @@ public abstract class Persona {
         this.email = email;
     }
 
+    //Getters & Setters
     public String getNombre() {
         return nombre;
     }
@@ -37,7 +40,7 @@ public abstract class Persona {
     }
 
     @Override
-    public String toString() {
+    public String toString() {//Metodo toString para mostrar los datos de la clase persona
         return "Persona{" +
                 "nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
