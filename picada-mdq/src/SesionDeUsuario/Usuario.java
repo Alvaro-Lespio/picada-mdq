@@ -9,24 +9,26 @@ public class Usuario extends Persona{
     private String contrasenia;
     private int puntos;
     private double monto;
-    private String rol;
+    private boolean isAdmin;
 
     public Usuario() {//Creo el constructor vacio
         this.nombreUsuario = "";
         this.contrasenia = "";
         this.puntos = 0;
         this.monto = 0;
-        this.rol = "";
+        this.isAdmin = false;
     }
 
     //Constructor completo
-    public Usuario(String nombre, String apellido, String direccion, String email, String nombreUsuario, String contrasenia, int puntos, double monto, String rol) {
-        super(nombre, apellido, direccion, email);
+
+
+    public Usuario(String nombre, String apellido, String calle, int numero, String email, String nombreUsuario, String contrasenia, int puntos, double monto, boolean isAdmin) {
+        super(nombre, apellido, calle, numero, email);
         this.nombreUsuario = nombreUsuario;
         this.contrasenia = contrasenia;
         this.puntos = puntos;
         this.monto = monto;
-        this.rol = rol;
+        this.isAdmin = isAdmin;
     }
 
     //Getters & Setters
@@ -46,8 +48,8 @@ public class Usuario extends Persona{
         return monto;
     }
 
-    public String getRol() {
-        return rol;
+    public boolean getIsAdmin() {
+        return isAdmin;
     }
 
     @Override
@@ -57,7 +59,7 @@ public class Usuario extends Persona{
                 ", contrasenia='" + contrasenia + '\'' +
                 ", puntos=" + puntos +
                 ", monto=" + monto +
-                ", rol='" + rol + '\'' +
+                ", isAdmin=" + isAdmin +
                 '}';
     }
 }
