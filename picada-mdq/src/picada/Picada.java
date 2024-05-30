@@ -1,38 +1,43 @@
 package picada;
 
 import Ingredientes.Agregado;
-import Ingredientes.producto.ProdcutoFiambre;
+import Ingredientes.producto.ProductoFiambre;
 import Ingredientes.producto.ProductoQueso;
 import Ingredientes.producto.ProductoSnack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Picada {
      private int id;
      private List<ProductoQueso> productoQuesoList;
-     private List<ProdcutoFiambre> prodcutoFiambreList;
+     private List<ProductoFiambre> productoFiambreList;
      private List<ProductoSnack> productoSnacksList;
      private double precioTotal;
-     private boolean envio;
-     private int valoracion;
-     private Agregado agregado;
+     private List<Agregado> agregado;
 
     public Picada() {
         this.precioTotal = 0;
-        this.envio = false;
-        this.valoracion = 0;
-        this.agregado = new Agregado();
+        this.agregado = new ArrayList<>();
     }
 
-    public Picada(int id, List<ProductoQueso> productoQuesoList, List<ProdcutoFiambre> prodcutoFiambreList, List<ProductoSnack> productoSnacksList, double precioTotal, boolean envio, int valoracion, Agregado agregado) {
+    public Picada(int id, List<ProductoQueso> productoQuesoList, List<ProductoFiambre> productoFiambreList, List<ProductoSnack> productoSnacksList, double precioTotal, boolean envio, int valoracion, List<Agregado> agregado) {
         this.id = id;
         this.productoQuesoList = productoQuesoList;
-        this.prodcutoFiambreList = prodcutoFiambreList;
+        this.productoFiambreList = productoFiambreList;
         this.productoSnacksList = productoSnacksList;
         this.precioTotal = precioTotal;
-        this.envio = envio;
-        this.valoracion = valoracion;
         this.agregado = agregado;
+    }
+
+
+
+    public List<ProductoFiambre> getProductoFiambreList() {
+        return productoFiambreList;
+    }
+
+    public void setProductoFiambreList(List<ProductoFiambre> productoFiambreList) {
+        this.productoFiambreList = productoFiambreList;
     }
 
     public double getPrecioTotal() {
@@ -43,30 +48,13 @@ public abstract class Picada {
         this.precioTotal = precioTotal;
     }
 
-    public boolean isEnvio() {
-        return envio;
-    }
-
-    public void setEnvio(boolean envio) {
-        this.envio = envio;
-    }
-
-    public int getValoracion() {
-        return valoracion;
-    }
-
-    public void setValoracion(int valoracion) {
-        this.valoracion = valoracion;
-    }
-
-    public Agregado getAgregado() {
+    public List<Agregado> getAgregado() {
         return agregado;
     }
 
-    public void setAgregado(Agregado agregado) {
+    public void setAgregado(List<Agregado> agregado) {
         this.agregado = agregado;
     }
-
 
     public int getId() {
         return id;
@@ -81,12 +69,12 @@ public abstract class Picada {
         this.productoQuesoList = productoQuesoList;
     }
 
-    public List<ProdcutoFiambre> getProdcutoFiambreList() {
-        return prodcutoFiambreList;
+    public List<ProductoFiambre> getProdcutoFiambreList() {
+        return productoFiambreList;
     }
 
-    public void setProdcutoFiambreList(List<ProdcutoFiambre> prodcutoFiambreList) {
-        this.prodcutoFiambreList = prodcutoFiambreList;
+    public void setProdcutoFiambreList(List<ProductoFiambre> productoFiambreList) {
+        this.productoFiambreList = productoFiambreList;
     }
 
     public List<ProductoSnack> getProductoSnacksList() {
