@@ -13,9 +13,10 @@ public abstract class Picada {
      private List<ProductoQueso> productoQuesoList;
      private List<ProductoFiambre> productoFiambreList;
      private List<ProductoSnack> productoSnacksList;
-     private double precioTotal;
      private List<Agregado> agregado;
+     private double precioTotal;
 
+     //private List<Ticket> tickets;  -> recorrer con un iterador e ir guardando en un archivo.
     public Picada() {
         this.precioTotal = 0;
         this.agregado = new ArrayList<>();

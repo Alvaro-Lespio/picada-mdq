@@ -17,11 +17,11 @@ public enum TipoFiambre {
     }
 
     public static TipoFiambre verificarFiambre(String fiambre) {
-        if(fiambre.equals(JAMON_COCIDO.getNombre())) {
+        if(fiambre.equalsIgnoreCase(JAMON_COCIDO.getNombre())) {
             return JAMON_COCIDO;
-        }else if(fiambre.equals(JAMON_CRUDO.getNombre())) {
+        }else if(fiambre.equalsIgnoreCase(JAMON_CRUDO.getNombre())) {
             return JAMON_CRUDO;
-        }else if(fiambre.equals(SALAME.getNombre())) {
+        }else if(fiambre.equalsIgnoreCase(SALAME.getNombre())) {
             return SALAME;
         }else{
             return MORTADELA;

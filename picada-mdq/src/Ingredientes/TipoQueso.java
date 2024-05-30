@@ -13,11 +13,11 @@ public enum TipoQueso {
     }
 
     public static TipoQueso verificarQueso(String queso) {
-        if(queso.equals("mozzarella")) {
+        if(queso.equalsIgnoreCase("mozzarella")) {
             return MOZZARELLA;
-        }else if(queso.equals("roquefort")) {
+        }else if(queso.equalsIgnoreCase("roquefort")) {
             return ROQUEFORT;
-        }else if(queso.equals("cheddar")) {
+        }else if(queso.equalsIgnoreCase("cheddar")) {
             return CHEDDAR;
         }else{
             return GOUDA;
