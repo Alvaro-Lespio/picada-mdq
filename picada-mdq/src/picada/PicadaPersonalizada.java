@@ -1,7 +1,6 @@
 package picada;
 
 import Ingredientes.Agregado;
-import Ingredientes.Ingrediente;
 
 import java.util.ArrayList;
 import java.util.List;

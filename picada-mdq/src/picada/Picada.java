@@ -1,40 +1,38 @@
 package picada;
 
 import Ingredientes.Agregado;
-import Ingredientes.Ingrediente;
+import Ingredientes.producto.ProdcutoFiambre;
+import Ingredientes.producto.ProductoQueso;
+import Ingredientes.producto.ProductoSnack;
 
-import java.util.Objects;
+import java.util.List;
 
 public abstract class Picada {
      private int id;
-     private Ingrediente ingrediente;
+     private List<ProductoQueso> productoQuesoList;
+     private List<ProdcutoFiambre> prodcutoFiambreList;
+     private List<ProductoSnack> productoSnacksList;
      private double precioTotal;
      private boolean envio;
      private int valoracion;
      private Agregado agregado;
 
     public Picada() {
-        this.ingrediente = new Ingrediente();
         this.precioTotal = 0;
         this.envio = false;
         this.valoracion = 0;
         this.agregado = new Agregado();
     }
 
-    public Picada(Ingrediente ingrediente, double precioTotal, boolean envio, int valoracion, Agregado agregado) {
-        this.ingrediente = ingrediente;
+    public Picada(int id, List<ProductoQueso> productoQuesoList, List<ProdcutoFiambre> prodcutoFiambreList, List<ProductoSnack> productoSnacksList, double precioTotal, boolean envio, int valoracion, Agregado agregado) {
+        this.id = id;
+        this.productoQuesoList = productoQuesoList;
+        this.prodcutoFiambreList = prodcutoFiambreList;
+        this.productoSnacksList = productoSnacksList;
         this.precioTotal = precioTotal;
         this.envio = envio;
         this.valoracion = valoracion;
         this.agregado = agregado;
-    }
-
-    public Ingrediente getIngrediente() {
-        return ingrediente;
-    }
-
-    public void setIngrediente(Ingrediente ingrediente) {
-        this.ingrediente = ingrediente;
     }
 
     public double getPrecioTotal() {
@@ -70,15 +68,33 @@ public abstract class Picada {
     }
 
 
-    @Override
-    public String toString() {
-        return "Picada{" +
-                "ingrediente=" + ingrediente +
-                ", precioTotal=" + precioTotal +
-                ", envio=" + envio +
-                ", valoracion=" + valoracion +
-                ", agregado=" + agregado +
-                '}';
+    public int getId() {
+        return id;
+    }
+
+
+    public List<ProductoQueso> getProductoQuesoList() {
+        return productoQuesoList;
+    }
+
+    public void setProductoQuesoList(List<ProductoQueso> productoQuesoList) {
+        this.productoQuesoList = productoQuesoList;
+    }
+
+    public List<ProdcutoFiambre> getProdcutoFiambreList() {
+        return prodcutoFiambreList;
+    }
+
+    public void setProdcutoFiambreList(List<ProdcutoFiambre> prodcutoFiambreList) {
+        this.prodcutoFiambreList = prodcutoFiambreList;
+    }
+
+    public List<ProductoSnack> getProductoSnacksList() {
+        return productoSnacksList;
+    }
+
+    public void setProductoSnacksList(List<ProductoSnack> productoSnacksList) {
+        this.productoSnacksList = productoSnacksList;
     }
 
     private int generarId(){
