@@ -1,5 +1,7 @@
 package SesionDeUsuario;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import pedido.Pedido;
 
 import java.util.ArrayList;
@@ -65,6 +67,34 @@ public class Usuario extends Persona{
 
     public boolean getIsAdmin() {
         return isAdmin;
+    }
+
+    //METODOS
+    public JSONObject usuarioToJSON() throws Exception{
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("persona", personaToJSON());
+        jsonObject.put("usuario", nombreUsuario);
+        jsonObject.put("contrasenia", contrasenia);
+
+        JSONArray arrayPedidos = new JSONArray();
+        for(int i=0; i<pedidos.size(); i++){
+            arrayPedidos.put(pedidos.get(i));//falta agregar el .pedidoToJSON
+        }
+        jsonObject.put("pedidos", arrayPedidos);
+
+        return jsonObject;
+    }
+
+    public boolean agregarPedido(Pedido pedido){
+        pedidos.add(pedido);
+        return true;
+    }
+
+    public boolean eliminarPedido(Pedido pedido){
+        boolean eliminado = false;
+        eliminado = pedidos.remove(pedido);
+        //Si llegamos a hacer pedidos cancelados lo agregariamos ahí
+        return true;
     }
 
     @Override
