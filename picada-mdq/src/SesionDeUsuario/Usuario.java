@@ -1,10 +1,12 @@
 package SesionDeUsuario;
 
+import pedido.Pedido;
+
 import java.util.ArrayList;
 
 public class Usuario extends Persona{
     //Atributos
-    //private ArrayList<Pedido> pedidoArrayList;
+    private ArrayList<Pedido> pedidos;
     private String nombreUsuario;
     private String contrasenia;
     private int puntos;
@@ -17,6 +19,7 @@ public class Usuario extends Persona{
         this.puntos = 0;
         this.monto = 0;
         this.isAdmin = false;
+        pedidos = null;
     }
 
     //Constructor completo
@@ -29,9 +32,21 @@ public class Usuario extends Persona{
         this.puntos = puntos;
         this.monto = monto;
         this.isAdmin = isAdmin;
+        pedidos = new ArrayList<>();
+    }
+
+    public Usuario(Persona persona, String nombreUsuario, String contrasenia, ArrayList<Pedido> pedidos) {
+        super(persona.getNombre(), persona.getApellido(), persona.getCalle(), persona.getNumero(), persona.getEmail());
+        this.nombreUsuario = nombreUsuario;
+        this.contrasenia = contrasenia;
+        this.pedidos = pedidos;
     }
 
     //Getters & Setters
+
+    public ArrayList<Pedido> getPedidos() {
+        return pedidos;
+    }
     public String getNombreUsuario() {
         return nombreUsuario;
     }
