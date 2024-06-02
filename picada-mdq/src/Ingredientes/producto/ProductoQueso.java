@@ -30,6 +30,6 @@ public class ProductoQueso extends Producto{
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("stock", getStock());
         jsonObject.put("TipoQueso", tipoQueso.getNombre());
-        return jsonObject;  
+        return jsonObject;
     }
 }
