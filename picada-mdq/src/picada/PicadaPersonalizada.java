@@ -1,6 +1,5 @@
 package picada;
 
-import Ingredientes.Agregado;
 import Ingredientes.producto.Producto;
 import Ingredientes.producto.ProductoFiambre;
 import Ingredientes.producto.ProductoQueso;

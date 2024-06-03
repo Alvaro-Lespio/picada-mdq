@@ -8,7 +8,7 @@ import java.util.List;
 public class PicadaPreDefinida {
     private List<Combo> combos;
     private List<Producto> productos;
-    
+
     public PicadaPreDefinida() {
         combos = new ArrayList<>();
         productos = new ArrayList<>();

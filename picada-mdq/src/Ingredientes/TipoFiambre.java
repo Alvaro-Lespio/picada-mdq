@@ -12,6 +12,7 @@ public enum TipoFiambre {
         this.nombre = nombre;
     }
 
+
     public String getNombre() {
         return nombre;
     }
