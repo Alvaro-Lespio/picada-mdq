@@ -16,7 +16,7 @@ public abstract class Picada {
      private int id;
      private List<ProductoQueso> productoQuesoList;
      private List<ProductoFiambre> productoFiambreList;
-     private List<ProductoSnack> productoSnacksList;
+     private List<ProductoSnack> productoSnackList;
      private List<ProductoBebida> productoBebidaList;
      private double precioTotal;
 
@@ -26,7 +26,7 @@ public abstract class Picada {
     public Picada() {
         this.productoQuesoList = new ArrayList<>();
         this.productoFiambreList = new ArrayList<>();
-        this.productoSnacksList = new ArrayList<>();
+        this.productoSnackList = new ArrayList<>();
         this.productoBebidaList = new ArrayList<>();
         this.precioTotal = 0.0;
         this.id = 0;
@@ -35,7 +35,7 @@ public abstract class Picada {
     public Picada( List<ProductoQueso> productoQuesoList, List<ProductoFiambre> productoFiambreList, List<ProductoSnack> productoSnacksList, List<ProductoBebida> productoBebidaList, double precioTotal) {
         this.productoQuesoList = productoQuesoList;
         this.productoFiambreList = productoFiambreList;
-        this.productoSnacksList = productoSnacksList;
+        this.productoSnackList = productoSnacksList;
         this.productoBebidaList = productoBebidaList;
         this.precioTotal = precioTotal;
     }
@@ -81,12 +81,12 @@ public abstract class Picada {
         this.productoFiambreList = productoFiambreList;
     }
 
-    public List<ProductoSnack> getProductoSnacksList() {
-        return productoSnacksList;
+    public List<ProductoSnack> getProductoSnackList() {
+        return productoSnackList;
     }
 
-    public void setProductoSnacksList(List<ProductoSnack> productoSnacksList) {
-        this.productoSnacksList = productoSnacksList;
+    public void setProductoSnackList(List<ProductoSnack> productoSnackList) {
+        this.productoSnackList = productoSnackList;
     }
 
     public void setProductoBebidaList(List<ProductoBebida> productoBebidaList) {
@@ -131,13 +131,13 @@ public abstract class Picada {
         }
         picada.setProductoFiambreList(productoFiambreList);
 
-        JSONArray snackArray = picadaJson.getJSONArray("productoSnacksList");
-        List<ProductoSnack> productoSnacksList = new ArrayList<>();
+        JSONArray snackArray = picadaJson.getJSONArray("productoSnackList");
+        List<ProductoSnack> productoSnackList = new ArrayList<>();
         for (int i = 0; i < snackArray.length(); i++) {
             JSONObject snackJson = snackArray.getJSONObject(i);
-            productoSnacksList.add(ProductoSnack.JSONToProductoSnack(snackJson));
+            productoSnackList.add(ProductoSnack.JSONToProductoSnack(snackJson));
         }
-        picada.setProductoSnacksList(productoSnacksList);
+        picada.setProductoSnackList(productoSnackList);
 
         JSONArray bebidaArray = picadaJson.getJSONArray("productoBebidaList");
         List<ProductoBebida> productoBebidaList = new ArrayList<>();
@@ -148,6 +148,34 @@ public abstract class Picada {
         picada.setProductoBebidaList(productoBebidaList);
     }
 
+    public JSONObject picadaToJSON() throws JSONException{
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", id);
+        jsonObject.put("precioTotal", precioTotal);
 
+        JSONArray quesoArray = new JSONArray();
+        for(ProductoQueso productoQueso : productoQuesoList){
+            quesoArray.put(productoQueso.productoQuesoToJSON());
+        }
+        jsonObject.put("productoQuesoList", quesoArray);
 
+        JSONArray fiambreArray = new JSONArray();
+        for(ProductoFiambre productoFiambre : productoFiambreList){
+            fiambreArray.put(productoFiambre.productoFiambreToJSON());
+        }
+        jsonObject.put("productoFiambreList", fiambreArray);
+
+        JSONArray snackArray = new JSONArray();
+        for(ProductoSnack productoSnack : productoSnackList){
+            snackArray.put(productoSnack.productoSnackToJSON());
+        }
+        jsonObject.put("productoSnackList", snackArray);
+
+        JSONArray bebidaArray = new JSONArray();
+        for(ProductoBebida productoBebida : productoBebidaList){
+            bebidaArray.put(productoBebida.productoBebidaToJSON());
+        }
+        jsonObject.put("productoBebidaList", bebidaArray);
+        return jsonObject;
+    }
 }
