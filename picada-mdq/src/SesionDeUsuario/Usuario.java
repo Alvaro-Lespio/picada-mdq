@@ -1,10 +1,14 @@
 package SesionDeUsuario;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import pedido.Pedido;
+
 import java.util.ArrayList;
 
 public class Usuario extends Persona{
     //Atributos
-    //private ArrayList<Pedido> pedidoArrayList;
+    private ArrayList<Pedido> pedidos;
     private String nombreUsuario;
     private String contrasenia;
     private int puntos;
@@ -17,6 +21,7 @@ public class Usuario extends Persona{
         this.puntos = 0;
         this.monto = 0;
         this.isAdmin = false;
+        pedidos = null;
     }
 
     //Constructor completo
@@ -29,9 +34,21 @@ public class Usuario extends Persona{
         this.puntos = puntos;
         this.monto = monto;
         this.isAdmin = isAdmin;
+        pedidos = new ArrayList<>();
+    }
+
+    public Usuario(Persona persona, String nombreUsuario, String contrasenia, ArrayList<Pedido> pedidos) {
+        super(persona.getNombre(), persona.getApellido(), persona.getCalle(), persona.getNumero(), persona.getEmail());
+        this.nombreUsuario = nombreUsuario;
+        this.contrasenia = contrasenia;
+        this.pedidos = pedidos;
     }
 
     //Getters & Setters
+
+    public ArrayList<Pedido> getPedidos() {
+        return pedidos;
+    }
     public String getNombreUsuario() {
         return nombreUsuario;
     }
@@ -50,6 +67,34 @@ public class Usuario extends Persona{
 
     public boolean getIsAdmin() {
         return isAdmin;
+    }
+
+    //METODOS
+    public JSONObject usuarioToJSON() throws Exception{
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("persona", personaToJSON());
+        jsonObject.put("usuario", nombreUsuario);
+        jsonObject.put("contrasenia", contrasenia);
+
+        JSONArray arrayPedidos = new JSONArray();
+        for(int i=0; i<pedidos.size(); i++){
+            arrayPedidos.put(pedidos.get(i));//falta agregar el .pedidoToJSON
+        }
+        jsonObject.put("pedidos", arrayPedidos);
+
+        return jsonObject;
+    }
+
+    public boolean agregarPedido(Pedido pedido){
+        pedidos.add(pedido);
+        return true;
+    }
+
+    public boolean eliminarPedido(Pedido pedido){
+        boolean eliminado = false;
+        eliminado = pedidos.remove(pedido);
+        //Si llegamos a hacer pedidos cancelados lo agregariamos ahí
+        return true;
     }
 
     @Override

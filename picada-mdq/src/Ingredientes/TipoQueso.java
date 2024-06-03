@@ -12,6 +12,10 @@ public enum TipoQueso {
         this.nombre = nombre;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
     public static TipoQueso verificarQueso(String queso) {
         if(queso.equalsIgnoreCase("mozzarella")) {
             return MOZZARELLA;

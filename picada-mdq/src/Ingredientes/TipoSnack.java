@@ -16,7 +16,7 @@ public enum TipoSnack {
         return nombre;
     }
 
-    public static TipoSnack obtenerTipoSnack(String nombre){
+    public static TipoSnack verificarSnack(String nombre){
         if(nombre.equalsIgnoreCase(PAPAS_FRITAS.getNombre())){
             return PAPAS_FRITAS;
         }else if(nombre.equalsIgnoreCase(PALITOS.getNombre())){
