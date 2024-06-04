@@ -16,6 +16,10 @@ import java.util.Map;
 public class ControladoraUsuario {
     private HashMap<String, Usuario> mapaUsuarios;
 
+    public ControladoraUsuario() {
+        mapaUsuarios = new HashMap<>();
+    }
+
     public ControladoraUsuario(HashMap<String, Usuario> mapaUsuarios) {
         this.mapaUsuarios = mapaUsuarios;
     }
