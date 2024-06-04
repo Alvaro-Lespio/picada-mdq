@@ -32,7 +32,8 @@ public abstract class Picada {
         this.id = 0;
     }
 
-    public Picada( List<ProductoQueso> productoQuesoList, List<ProductoFiambre> productoFiambreList, List<ProductoSnack> productoSnacksList, List<ProductoBebida> productoBebidaList, double precioTotal) {
+    public Picada(List<ProductoQueso> productoQuesoList, List<ProductoFiambre> productoFiambreList, List<ProductoSnack> productoSnacksList, List<ProductoBebida> productoBebidaList, double precioTotal) {
+        this.id = generarId();
         this.productoQuesoList = productoQuesoList;
         this.productoFiambreList = productoFiambreList;
         this.productoSnackList = productoSnacksList;
