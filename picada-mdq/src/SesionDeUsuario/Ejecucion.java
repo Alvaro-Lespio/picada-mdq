@@ -106,7 +106,34 @@ public class Ejecucion {
 
     //FUNCION DE MENU DE PICADA
     private static void menuPicada(Usuario usuario, ControladoraProducto controladoraProducto){
+        boolean salir = false;
+        do{
+            System.out.println("\n------------------PICADA-------------------");
+            System.out.println("Ingrese la opcion que desea realizar: ");
+            System.out.println("OPCION 1: ");
+            System.out.println("OPCION 2: ");
+            System.out.println("OPCION 3: ");
+            System.out.println("OPCION 4: Salir");
+            System.out.println("-----------------------------------------------");
+            System.out.println("Ingrese su opción aquí: ");
+            int opcion = scanner.nextInt();
+            switch (opcion){
+                case 1:
+                    break;
 
+                case 2:
+                    break;
+
+                case 3:
+                    break;
+
+                case 4:
+                    break;
+
+                default:
+                    System.out.println("La opcion es incorrecta");
+            }
+        }while (!salir); //Mientras el usuario no desee salir
     }
 
     public static Usuario crearUsuario()
