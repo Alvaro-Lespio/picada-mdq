@@ -1,9 +1,6 @@
 package picada;
 
-import Ingredientes.producto.Producto;
-import Ingredientes.producto.ProductoFiambre;
-import Ingredientes.producto.ProductoQueso;
-import Ingredientes.producto.ProductoSnack;
+import Ingredientes.producto.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +13,11 @@ public class PicadaPersonalizada extends Picada{
         this.productos = new ArrayList<>();
     }
 
-    public PicadaPersonalizada(List<Producto> productos,int id, List<ProductoQueso> productoQuesoList, List<ProductoFiambre> productoFiambreList, List<ProductoSnack> productoSnacksList, double precioTotal, boolean envio, int valoracion, List<Agregado> agregado) {
-        super(id, productoQuesoList, productoFiambreList, productoSnacksList, precioTotal, envio, valoracion, agregado);
+    public PicadaPersonalizada(List<ProductoQueso> productoQuesoList, List<ProductoFiambre> productoFiambreList, List<ProductoSnack> productoSnacksList, List<ProductoBebida> productoBebidaList, double precioTotal, List<Producto> productos) {
+        super(productoQuesoList, productoFiambreList, productoSnacksList, productoBebidaList, precioTotal);
         this.productos = productos;
     }
+
 
     public List<Producto> getProductos() {
         return productos;

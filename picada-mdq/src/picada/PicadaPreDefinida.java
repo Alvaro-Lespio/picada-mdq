@@ -1,11 +1,11 @@
 package picada;
 
-import Ingredientes.producto.Producto;
+import Ingredientes.producto.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PicadaPreDefinida {
+public class PicadaPreDefinida extends Picada{
     private List<Combo> combos;
     private List<Producto> productos;
 
@@ -14,7 +14,8 @@ public class PicadaPreDefinida {
         productos = new ArrayList<>();
     }
 
-    public PicadaPreDefinida(List<Combo> combos, List<Producto> productos) {
+    public PicadaPreDefinida(List<ProductoQueso> productoQuesoList, List<ProductoFiambre> productoFiambreList, List<ProductoSnack> productoSnacksList, List<ProductoBebida> productoBebidaList, double precioTotal, List<Combo> combos, List<Producto> productos) {
+        super(productoQuesoList, productoFiambreList, productoSnacksList, productoBebidaList, precioTotal);
         this.combos = combos;
         this.productos = productos;
     }

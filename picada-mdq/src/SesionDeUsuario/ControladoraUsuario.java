@@ -79,7 +79,7 @@ public class ControladoraUsuario {
         return usuarioEncontrado;
     }
 
-    public Usuario registrarse(Usuario usuario) throws UsuarioRepetidoException {
+    public void registrarse(Usuario usuario) throws UsuarioRepetidoException {
         Usuario aux = null;
         aux = verificarUsuario(usuario.getEmail());
         if(aux == null){
