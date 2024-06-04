@@ -1,4 +1,4 @@
-package Ingredientes;
+package Producto.tipo;
 
 public enum TipoBebida {
     COCA_COLA("coca cola"),

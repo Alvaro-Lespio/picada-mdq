@@ -1,6 +1,6 @@
-package Ingredientes.producto;
+package Producto;
 
-import Ingredientes.TipoFiambre;
+import Producto.tipo.TipoFiambre;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,6 +15,10 @@ public class ProductoFiambre extends Producto{
     @Override
     public void actualizarStock() {
 
+    }
+
+    public TipoFiambre getTipoFiambre() {
+        return tipoFiambre;
     }
 
     public static ProductoFiambre JSONToProductoFiambre(JSONObject JSONproductoFiambre) throws JSONException{

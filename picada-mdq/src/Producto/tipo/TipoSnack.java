@@ -1,4 +1,4 @@
-package Ingredientes;
+package Producto.tipo;
 
 public enum TipoSnack {
     PAPAS_FRITAS("papas fritas"),

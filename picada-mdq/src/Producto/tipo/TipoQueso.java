@@ -1,4 +1,4 @@
-package Ingredientes;
+package Producto.tipo;
 
 public enum TipoQueso {
     MOZZARELLA("mozzarella"),

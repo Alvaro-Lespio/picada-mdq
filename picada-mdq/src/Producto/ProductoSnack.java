@@ -1,6 +1,6 @@
-package Ingredientes.producto;
+package Producto;
 
-import Ingredientes.TipoSnack;
+import Producto.tipo.TipoSnack;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,6 +15,10 @@ public class ProductoSnack extends Producto{
     @Override
     public void actualizarStock() {
 
+    }
+
+    public TipoSnack getTipoSnack() {
+        return tipoSnack;
     }
 
     public static ProductoSnack JSONToProductoSnack(JSONObject JSONProductoSnack) throws JSONException{

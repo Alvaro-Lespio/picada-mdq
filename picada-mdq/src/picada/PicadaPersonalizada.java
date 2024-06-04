@@ -1,6 +1,9 @@
 package picada;
 
 import Ingredientes.producto.*;
+import Producto.Producto;
+import Producto.ProductoFiambre;
+import Producto.ProductoQueso;
 
 import java.util.ArrayList;
 import java.util.List;

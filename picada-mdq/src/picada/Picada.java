@@ -1,10 +1,11 @@
 package picada;
 
 
-import Ingredientes.producto.ProductoBebida;
-import Ingredientes.producto.ProductoFiambre;
-import Ingredientes.producto.ProductoQueso;
-import Ingredientes.producto.ProductoSnack;
+import Producto.*;
+import Producto.tipo.TipoBebida;
+import Producto.tipo.TipoFiambre;
+import Producto.tipo.TipoQueso;
+import Producto.tipo.TipoSnack;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -178,5 +179,35 @@ public abstract class Picada {
         }
         jsonObject.put("productoBebidaList", bebidaArray);
         return jsonObject;
+    }
+
+    public boolean verificarDisponibilidad(Object tipoProducto) {
+        boolean disponibilidad = false;
+        if (tipoProducto instanceof TipoQueso) {
+            for (ProductoQueso queso : productoQuesoList) {
+                if (queso.getTipoQueso().equals(tipoProducto) && queso.getStock() > 0) {
+                    disponibilidad = true;
+                }
+            }
+        } else if (tipoProducto instanceof TipoBebida) {
+            for (ProductoBebida bebida : productoBebidaList) {
+                if (bebida.getTipoBebida().equals(tipoProducto) && bebida.getStock() > 0) {
+                    disponibilidad = true;
+                }
+            }
+        } else if (tipoProducto instanceof TipoFiambre) {
+            for (ProductoFiambre fiambre : productoFiambreList) {
+                if (fiambre.getTipoFiambre().equals(tipoProducto) && fiambre.getStock() > 0) {
+                    disponibilidad = true;
+                }
+            }
+        } else if (tipoProducto instanceof TipoSnack) {
+            for (ProductoSnack snack : productoSnackList) {
+                if (snack.getTipoSnack().equals(tipoProducto) && snack.getStock() > 0) {
+                    disponibilidad = true;
+                }
+            }
+        }
+        return disponibilidad;
     }
 }

@@ -1,4 +1,4 @@
-package Ingredientes;
+package Producto.tipo;
 
 public enum TipoFiambre {
     JAMON_COCIDO("jamon cocido"),

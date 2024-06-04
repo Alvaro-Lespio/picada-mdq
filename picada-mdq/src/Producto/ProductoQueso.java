@@ -1,6 +1,6 @@
-package Ingredientes.producto;
+package Producto;
 
-import Ingredientes.TipoQueso;
+import Producto.tipo.TipoQueso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,6 +15,10 @@ public class ProductoQueso extends Producto{
     @Override
     public void actualizarStock() {
 
+    }
+
+    public TipoQueso getTipoQueso() {
+        return tipoQueso;
     }
 
     public static ProductoQueso JSONToProductoQueso(JSONObject JSONProductoQueso) throws JSONException{
