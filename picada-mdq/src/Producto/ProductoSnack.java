@@ -32,4 +32,9 @@ public class ProductoSnack extends Producto{
         jsonObject.put("tipoSnack", tipoSnack.getNombre());
         return jsonObject;
     }
+
+    @Override
+    public String toString() {
+        return "Snack = " + tipoSnack;
+    }
 }
