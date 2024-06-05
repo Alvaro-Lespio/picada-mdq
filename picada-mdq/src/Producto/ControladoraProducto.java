@@ -12,16 +12,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import pedido.Pedido;
 import picada.Picada;
+import picada.PicadaPersonalizada;
 import picada.PicadaPreDefinida;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 //lo que vamos a hacer aca es cargar e interactuar directo con el JSON
 public class ControladoraProducto {
     private HashSet<Producto> productos;
+    private HashSet<PicadaPreDefinida> picadas;
 
-    public ControladoraProducto() {
+    public ControladoraProducto() throws JSONException {
         productos = new HashSet<>();
+        cargarProductos();
+        picadas = new HashSet<>();
     }
 
     public void cargarProductos() throws JSONException{
@@ -115,16 +121,85 @@ public class ControladoraProducto {
             throw new RuntimeException(e);
         }
     }
-    //comprar picada predefinida
-    public Pedido<Picada> comprarPicada(Usuario usuario, PicadaPreDefinida picadaAPedir) throws DisponibilidadAgotadaException {
-        Pedido<Picada> pedido=null;
 
-        if(picadaAPedir.getCombos())
+    public void cargarPicadaPredefinida()throws JSONException{
+        //cargar las picadas predefinidas
+        PicadaPreDefinida p1 = new PicadaPreDefinida("combo1", "Combo normal", 1, List.of(TipoQueso.GOUDA,TipoQueso.CHEDDAR), List.of(TipoFiambre.JAMON_COCIDO), List.of(TipoSnack.CHIZITO), List.of(TipoBebida.COCA_COLA),10);
+
+        picadas.add(p1);
+        try {
+            //aca obtener el valor de retorno de picadaToJSON
+            JSONObject p1JSON = p1.picadaToJSON();
+            //JSONObject p2JSON = p2.picadaToJSON();
 
 
+            JSONArray picadasArray = new JSONArray();
+            picadasArray.put(p1JSON);
 
+            JsonUtiles.grabar(picadasArray, "picadas");
+        }catch (JSONException e){
+            throw new RuntimeException(e);
+        }
 
     }
+
+
+
+    //elegir picada predefinida
+    public Pedido<Picada> elegirPicadaPredefinida(String nombrePicadaSeleccionada) throws DisponibilidadAgotadaException {
+        //en base al nombre de la picada, tenemos que hacer un equals y buscar ese combo y restarle el stock
+        Picada picadaPedido = verificarYActualizarStockPreDefinida(nombrePicadaSeleccionada);
+
+        Pedido<Picada> pedido = new Pedido<>(picadaPedido);
+        return pedido;
+    }
+
+
+
+    // Métodos para verificar y actualizar stock
+    public Picada verificarYActualizarStockPreDefinida(String nombreComboSeleccionada){
+        Picada picadaPedido = null;
+        //recorremos picada,
+        for (PicadaPreDefinida picada : picadas) {
+            if(picada.getNombreCombo().equalsIgnoreCase(nombreComboSeleccionada)){
+                if(picada.getStockCombo()> 0){
+                    picada.setStockCombo(picada.getStockCombo()-1);
+                    JsonUtiles.grabar(new JSONArray(picadas), "picadas.json");
+                    picadaPedido = picada;
+                }else{
+                    throw new CombosAgotadosException(); //-> crear la excepcion
+                }
+            }
+        }
+        return picadaPedido;
+    }
+
+    public void verificarYActualizarStockPersonalizada(List<? extends Producto> producto) throws DisponibilidadAgotadaException {
+            verificarProductos(producto);
+        // Guardar el nuevo stock en el JSON
+        JsonUtiles.grabar(new JSONArray(productos), "productos.json");
+    }
+
+    private void verificarProductos(List<? extends Producto> productosEnPicada) throws DisponibilidadAgotadaException {
+        for (Producto productoPicada : productosEnPicada) {
+            boolean productoEncontrado = false;
+            for (Producto productoStock : productos) {
+                if (productoPicada.getClass().equals(productoStock.getClass())) {
+                    if (productoStock.getStock() >= productoPicada.getStock()) {
+                        productoStock.setStock((int) (productoStock.getStock() - productoPicada.getStock()));
+                        productoEncontrado = true;
+                        break;
+                    } else {
+                        throw new DisponibilidadAgotadaException("Stock insuficiente para el producto: " + productoPicada.getClass().getSimpleName());
+                    }
+                }
+            }
+            if (!productoEncontrado) {
+                throw new DisponibilidadAgotadaException("Producto no encontrado en el stock: " + productoPicada.getClass().getSimpleName());
+            }
+        }
+    }
+
 
     public HashSet<Producto> getProductos() {
         return productos;

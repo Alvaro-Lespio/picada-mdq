@@ -11,30 +11,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pedido<T> implements IPedido{
-    private T pedidos;
+    private List<T> picadas;
     private int id;
     private boolean envio;
     private String tipoPicada;
     private double precioFinalPedido;
-    private int valoracion;
 
 
     public Pedido() {
-        this.pedidos = null;
+        this.picadas = null;
         this.id = 0;
         this.envio = false;
         this.tipoPicada = "";
         this.precioFinalPedido = 0;
-        this.valoracion = 0;
     }
 
-    public Pedido(T pedidos, int id, boolean envio, String tipoPicada, double precioFinalPedido, int valoracion) {
-        this.pedidos = pedidos;
+    public Pedido(List<T> picadas, int id, boolean envio, String tipoPicada, double precioFinalPedido) {
+        this.picadas = picadas;
         this.id = id;
         this.envio = envio;
         this.tipoPicada = tipoPicada;
         this.precioFinalPedido = precioFinalPedido;
-        this.valoracion = valoracion;
+    }
+
+    public Pedido(T pedidos) {
+        this.pedidos = pedidos;
     }
 
     //GETTERS
@@ -60,9 +61,6 @@ public class Pedido<T> implements IPedido{
         return precioFinalPedido;
     }
 
-    public int getValoracion() {
-        return valoracion;
-    }
 
     public static ArrayList<Pedido> JSONToPedido(JSONArray arrayPedidos) throws Exception{
         ArrayList<Pedido> arrayPedidosTotal = new ArrayList<>();
@@ -72,7 +70,6 @@ public class Pedido<T> implements IPedido{
             int id = objectPedidos.getInt("id");
             boolean envio = objectPedidos.getBoolean("envio");
             double precioFinal = objectPedidos.getDouble("precioFinal");
-            int valoracion = objectPedidos.getInt("valoracion");
 
             Picada picada = null;
             JSONObject picadaJSON = objectPedidos.getJSONObject("pedido");
@@ -88,7 +85,7 @@ public class Pedido<T> implements IPedido{
                 //excepcion tipo picada no encontrada
             }
 
-            Pedido pedido = new Pedido<>(picada, id, envio, tipoPicada, precioFinal, valoracion);
+            Pedido pedido = new Pedido<>(picada, id, envio, tipoPicada, precioFinal);
             arrayPedidosTotal.add(pedido);
         }
         return arrayPedidosTotal;
@@ -99,7 +96,6 @@ public class Pedido<T> implements IPedido{
         jsonObject.put("id", id);
         jsonObject.put("envio", envio);
         jsonObject.put("precioFinalPedido", precioFinalPedido);
-        jsonObject.put("valoracion", valoracion);
         return jsonObject;
     }
 

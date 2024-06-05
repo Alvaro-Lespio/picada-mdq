@@ -12,10 +12,6 @@ public class ProductoFiambre extends Producto{
         this.tipoFiambre = tipoFiambre;
     }
 
-    @Override
-    public void actualizarStock() {
-
-    }
 
     public TipoFiambre getTipoFiambre() {
         return tipoFiambre;

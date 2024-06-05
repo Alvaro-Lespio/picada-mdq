@@ -1,30 +1,24 @@
 package picada;
 
-import Ingredientes.producto.*;
 import Producto.Producto;
 import Producto.ProductoFiambre;
 import Producto.ProductoQueso;
+import Producto.ProductoSnack;
+import Producto.ProductoBebida;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class PicadaPersonalizada extends Picada{
-    private List<Producto> productos;
 
     public PicadaPersonalizada() {
-        this.productos = new ArrayList<>();
     }
 
-    public PicadaPersonalizada(List<ProductoQueso> productoQuesoList, List<ProductoFiambre> productoFiambreList, List<ProductoSnack> productoSnacksList, List<ProductoBebida> productoBebidaList, double precioTotal, List<Producto> productos) {
-        super(productoQuesoList, productoFiambreList, productoSnacksList, productoBebidaList, precioTotal);
-        this.productos = productos;
+    public PicadaPersonalizada(List<ProductoQueso> productoQuesoList, List<ProductoFiambre> productoFiambreList, List<ProductoSnack> productoSnacksList, List<ProductoBebida> productoBebidaList) {
+        super(productoQuesoList, productoFiambreList, productoSnacksList, productoBebidaList);
     }
 
-
-    public List<Producto> getProductos() {
-        return productos;
-    }
 
     //Vamos a tener un metodo que va a ser crearPicadaPersonalizada, para esto vamos a ir preguntandole al usuario en orden,
     //Si desea comprar queso s/n, que tipo de queso y le mostramos un listado con los quesos que estan disponibles, asi con jamon,

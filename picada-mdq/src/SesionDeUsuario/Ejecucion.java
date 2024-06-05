@@ -2,23 +2,31 @@ package SesionDeUsuario;
 
 import Apis.JsonUtiles;
 import Producto.ControladoraProducto;
+import Producto.Excepciones.DisponibilidadAgotadaException;
+import Producto.ProductoQueso;
 import SesionDeUsuario.Excepciones.ContraseniaIncorrectaException;
 import SesionDeUsuario.Excepciones.UsuarioNoEncontradoException;
 import SesionDeUsuario.Excepciones.UsuarioRepetidoException;
 import org.json.JSONArray;
 import org.json.JSONException;
+import pedido.Pedido;
+import picada.Picada;
+import picada.PicadaPersonalizada;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 public class Ejecucion {
     static Scanner scanner;
-    public static void ejecucion() throws IOException {
+    public static void ejecucion() throws IOException, JSONException {
         System.out.println("\t BIENVENIDO/S A PICADA MDQ!!");
 
-        ControladoraProducto controladoraProducto = new ControladoraProducto();
+            ControladoraProducto controladoraProducto = new ControladoraProducto();
         try{//Esto se hace una sola vez
+
             controladoraProducto.cargarProductos();
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -110,21 +118,46 @@ public class Ejecucion {
         do{
             System.out.println("\n------------------PICADA-------------------");
             System.out.println("Ingrese la opcion que desea realizar: ");
-            System.out.println("OPCION 1: ");
-            System.out.println("OPCION 2: ");
-            System.out.println("OPCION 3: ");
+            System.out.println("OPCION 1: ARMAR PICADA PERSONALIZADA");
+            System.out.println("OPCION 2: ELEGIR PICADA PREDEFINIDA");
+            System.out.println("OPCION 3: VER MIS PEDIDOS");
             System.out.println("OPCION 4: Salir");
             System.out.println("-----------------------------------------------");
             System.out.println("Ingrese su opción aquí: ");
             int opcion = scanner.nextInt();
             switch (opcion){
                 case 1:
+                    //Pedirle al usuario que ingrese los quesos, fiambres,etc, y en base a eso llenar el cosntructor.
+                    //Mostrar quesos, elegi el tipo de queso que quieras, si quiere otro mas lo va a agregar, que cuando
+                    //Termina se mete en una lista
+                    List<ProductoQueso> listaDeQueso = new ArrayList<>();
+                    try {
+                        controladoraProducto.verificarYActualizarStockPersonalizada(listaDeQueso);
+
+                    }catch (DisponibilidadAgotadaException e){
+                        System.out.println(e.getMessage());
+                    }catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
+
+
+                    //Mostrar Fiambre, elegi el tipo de fiambre que quieras, si quiere otro mas lo va a agregar, que cuando
+                    //Termina se mete en una lista
+                    List<ProductoQueso> listaDeFiambre = new ArrayList<>();
+                    controladoraProducto.verificarYActualizarStockPersonalizada(listaDeQueso);
+
+                    //Cuando tengamos todas las listas hacemos el new de picada y el new de pedido
+                    //
+                    Picada picada = new PicadaPersonalizada();
+
                     break;
 
                 case 2:
+
                     break;
 
                 case 3:
+
                     break;
 
                 case 4:

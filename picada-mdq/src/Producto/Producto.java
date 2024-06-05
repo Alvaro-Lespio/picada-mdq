@@ -20,9 +20,4 @@ public abstract class Producto {
         this.stock = stock;
     }
 
-    //funcion que modifica el stock en base a lo que pidio el usuario
-    public abstract void actualizarStock();
-
-    //
-
 }

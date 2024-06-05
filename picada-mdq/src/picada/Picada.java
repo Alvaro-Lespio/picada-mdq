@@ -33,13 +33,25 @@ public abstract class Picada {
         this.id = 0;
     }
 
-    public Picada(List<ProductoQueso> productoQuesoList, List<ProductoFiambre> productoFiambreList, List<ProductoSnack> productoSnacksList, List<ProductoBebida> productoBebidaList, double precioTotal) {
+    public Picada(List<ProductoQueso> productoQuesoList, List<ProductoFiambre> productoFiambreList, List<ProductoSnack> productoSnacksList, List<ProductoBebida> productoBebidaList) {
         this.id = generarId();
         this.productoQuesoList = productoQuesoList;
         this.productoFiambreList = productoFiambreList;
         this.productoSnackList = productoSnacksList;
         this.productoBebidaList = productoBebidaList;
-        this.precioTotal = precioTotal;
+        this.precioTotal = calcularPrecio();
+    }
+
+    private double calcularPrecio() {
+        float precioTotalInterno = 0;
+        for (ProductoQueso productoQueso : productoQuesoList) {
+            precioTotalInterno += productoQueso.getTipoQueso().getPrecio();
+        }
+        for (ProductoFiambre productoFiambre : productoFiambreList) {
+
+        }
+
+        return precioTotalInterno;
     }
 
     public List<ProductoFiambre> getProductoFiambreList() {
@@ -100,13 +112,7 @@ public abstract class Picada {
         return 0;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        Picada picada = (Picada) object;
-        return id == picada.id;
-    }
+
 
     @Override
     public int hashCode() {

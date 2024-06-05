@@ -1,15 +1,20 @@
 package Producto.tipo;
 
 public enum TipoQueso {
-    MOZZARELLA("mozzarella"),
-    ROQUEFORT("roquefort"),
-    CHEDDAR("cheddar"),
-    GOUDA("gouda");
+    MOZZARELLA("mozzarella",1.0f),
+    ROQUEFORT("roquefort",1.0f),
+    CHEDDAR("cheddar",1.0f),
+    GOUDA("gouda",1.0f),;
 
     private String nombre;
-
-    TipoQueso(String nombre) {
+    private float precio;
+    TipoQueso(String nombre, float precio) {
+        this.precio = precio;
         this.nombre = nombre;
+    }
+
+    public float getPrecio() {
+        return precio;
     }
 
     public String getNombre() {

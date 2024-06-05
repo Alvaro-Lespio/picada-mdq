@@ -12,10 +12,6 @@ public class ProductoBebida extends Producto{
         this.tipoBebida = tipoBebida;
     }
 
-    @Override
-    public void actualizarStock() {
-
-    }
 
     public TipoBebida getTipoBebida() {
         return tipoBebida;
