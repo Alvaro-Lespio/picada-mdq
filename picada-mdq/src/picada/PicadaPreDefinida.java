@@ -50,6 +50,16 @@ public class PicadaPreDefinida extends Picada{
         this.stockCombo = stockCombo;
     }
 
+    public PicadaPreDefinida(String nombreCombo, String descripcion, int cantPersonas, List<TipoQueso> tipoQueso, List<TipoSnack> tipoSnack, List<TipoBebida> tipoBebida, int stockCombo) {
+        this.nombreCombo = nombreCombo;
+        this.descripcion = descripcion;
+        this.cantPersonas = cantPersonas;
+        this.tipoQueso = tipoQueso;
+        this.tipoSnack = tipoSnack;
+        this.tipoBebida = tipoBebida;
+        this.stockCombo = stockCombo;
+    }
+
     public PicadaPreDefinida() {
         this.nombreCombo = "";
         this.descripcion = "";
