@@ -220,8 +220,8 @@ public class ControladoraProducto {
             if(picada.getNombreCombo().equalsIgnoreCase(nombreComboSeleccionada)){
                 if(picada.getStockCombo()> 0){
                     picada.setStockCombo(picada.getStockCombo()-1);
-                    JsonUtiles.grabar(new JSONArray(picadas), "picadas");
                     picadaPedido = picada;
+                    JsonUtiles.grabar(new JSONArray(picadas), "picadas");
                 }else{
                     throw new ComboAgotadoException("No hay mas stock de combos!");
                 }
@@ -235,6 +235,8 @@ public class ControladoraProducto {
         // Guardar el nuevo stock en el JSON
         JsonUtiles.grabar(new JSONArray(productos), "productos");
     }
+
+
 
     private void verificarProductos(List<? extends Producto> productosEnPicada) throws DisponibilidadAgotadaException {
         for (Producto productoPicada : productosEnPicada) {
@@ -283,6 +285,55 @@ public class ControladoraProducto {
     public void mostrarPoductoQueso(){
         mostrarProducto(ProductoQueso.class);
     }
+    public void mostrarPoductoFiambre(){
+        mostrarProducto(ProductoFiambre.class);
+    }
+    public void mostrarPoductoSnack(){
+        mostrarProducto(ProductoSnack.class);
+    }
+    public void mostrarPoductoBebida(){
+        mostrarProducto(ProductoBebida.class);
+    }
+
+    public void mostrarCombos(){
+        System.out.println("COMBOS: ");
+        for(PicadaPreDefinida combo : picadas){
+            System.out.println("Nombre: "+combo.getNombreCombo());
+            System.out.println("Descripcion: "+combo.getDescripcion());
+            System.out.println("Cantidad de Personas: "+combo.getCantPersonas());
+            System.out.println("Quesos: " + combo.getTipoQueso());
+            System.out.println("Fiambres: " + combo.getTipoFiambre());
+            System.out.println("Snacks: " + combo.getTipoSnack());
+            System.out.println("Bebidas: " + combo.getTipoBebida());
+            System.out.println("Stock: " + combo.getStockCombo());
+            System.out.println("-----------");
+        }
+    }
+
+   public void mostrarComboSeleccionado(String nombreComboSeleccionado) {
+
+        boolean comboEncontrado = false;
+       for(PicadaPreDefinida combo : picadas){
+           if (combo.getNombreCombo().equalsIgnoreCase(nombreComboSeleccionado)) {
+               System.out.println("Nombre del Combo: " + combo.getNombreCombo());
+               System.out.println("Descripción: " + combo.getDescripcion());
+               System.out.println("Cantidad de Personas: " + combo.getCantPersonas());
+               System.out.println("Quesos: " + combo.getTipoQueso());
+               System.out.println("Fiambres: " + combo.getTipoFiambre());
+               System.out.println("Snacks: " + combo.getTipoSnack());
+               System.out.println("Bebidas: " + combo.getTipoBebida());
+               System.out.println("Stock Disponible: " + combo.getStockCombo());
+               comboEncontrado = true;
+           }
+       }
+       if(!comboEncontrado){
+           System.out.println("El combo seleccionado no existe");
+       }
+   }
+
+
+
+
 
     public HashSet<Producto> getProductos() {
         return productos;

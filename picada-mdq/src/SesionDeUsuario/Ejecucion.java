@@ -3,7 +3,10 @@ package SesionDeUsuario;
 import Apis.JsonUtiles;
 import Producto.*;
 import Producto.Excepciones.DisponibilidadAgotadaException;
+import Producto.tipo.TipoBebida;
+import Producto.tipo.TipoFiambre;
 import Producto.tipo.TipoQueso;
+import Producto.tipo.TipoSnack;
 import SesionDeUsuario.Excepciones.ContraseniaIncorrectaException;
 import SesionDeUsuario.Excepciones.UsuarioNoEncontradoException;
 import SesionDeUsuario.Excepciones.UsuarioRepetidoException;
@@ -12,6 +15,7 @@ import org.json.JSONException;
 import pedido.Pedido;
 import picada.Picada;
 import picada.PicadaPersonalizada;
+import picada.PicadaPreDefinida;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,7 +35,15 @@ public class Ejecucion {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        */
+
+         */
+
+        try{
+            controladoraProducto.cargarPicadaPredefinida();
+        }catch (JSONException e){
+            throw new  RuntimeException(e);
+        }
+
 
         boolean salir = false;
         Usuario usuario = null; //Usuario a cargar
@@ -128,7 +140,7 @@ public class Ejecucion {
             int opcion = scanner.nextInt();
             switch (opcion){
                 case 1:
-                    //Pedirle al usuario que ingrese los quesos, fiambres,etc, y en base a eso llenar el cosntructor.
+                    //Pedirle al usuario que ingrese los quesos, fiambres,etc, y en base a eso llenar el constructor.
                     //Mostrar quesos, elegi el tipo de queso que quieras, si quiere otro mas lo va a agregar, que cuando
                     //Termina se mete en una lista
                     int i = 1;
@@ -171,44 +183,135 @@ public class Ejecucion {
 
                     //Mostrar Fiambre, elegi el tipo de fiambre que quieras, si quiere otro mas lo va a agregar, que cuando
                     //Termina se mete en una lista
+                    System.out.println("¿Desea comprar fiambre? (si/no): ");
+                    String filtradoFiambre = scanner.nextLine();
+                    //si desea comprar fiambre:
 
                     List<ProductoFiambre> listaDeFiambre = new ArrayList<>();
-                    try {
-                        controladoraProducto.verificarYActualizarStockPersonalizada(listaDeFiambre);
-                    }catch (DisponibilidadAgotadaException e){
-                        System.out.println(e.getMessage());
-                    }catch (Exception e){
-                        System.out.println(e.getMessage());
+
+                    if(filtradoFiambre.equalsIgnoreCase("si")){
+                        controladoraProducto.mostrarPoductoFiambre();
+                        do{
+                            System.out.println("Elija un fiambre: ");
+                            String nombreFiambre = scanner.nextLine();
+
+                            TipoFiambre tipoFiambreSeleccionado = TipoFiambre.verificarFiambre(nombreFiambre);
+                            ProductoFiambre productoFiambre = new ProductoFiambre(i, tipoFiambreSeleccionado);
+
+                            listaDeFiambre.add(productoFiambre);
+
+                            try {
+                                controladoraProducto.verificarYActualizarStockPersonalizada(listaDeFiambre);
+                            }catch (DisponibilidadAgotadaException e){
+                                System.out.println(e.getMessage());
+                            }catch (Exception e){
+                                System.out.println(e.getMessage());
+                            }
+                            i++;
+                            System.out.println("Desea agregar otro fiambre?");
+                            filtradoFiambre = scanner.nextLine();
+                        }while (filtradoFiambre.equalsIgnoreCase("si"));
+
+                        System.out.println("FIAMBRES SELECCIONADOS: ");
+                        for (ProductoFiambre productoFiambre : listaDeFiambre){
+                            System.out.println(productoFiambre);
+                        }
                     }
+
 
                     //Mostrar Snack, elegi el tipo de snack que quieras, si quiere otro mas lo va a agregar, que cuando
                     //Termina se mete en una lista
-                    List<ProductoSnack> listaDeSnack = new ArrayList<>();
-                    try {
-                        controladoraProducto.verificarYActualizarStockPersonalizada(listaDeSnack);
-                    }catch (DisponibilidadAgotadaException e){
-                        System.out.println(e.getMessage());
-                    }catch (Exception e){
-                        System.out.println(e.getMessage());
+
+                    System.out.println("Desea comprar snack? (si/no): ");
+                    String filtradoSnack = scanner.nextLine();
+                    //si desea comprar snack:
+
+                    List<ProductoSnack> listaSnack = new ArrayList<>();
+
+                    if(filtradoSnack.equalsIgnoreCase("si")){
+                        controladoraProducto.mostrarPoductoSnack();
+                        do{
+                            System.out.println("Elija un snack: ");
+                            String nombreSnack = scanner.nextLine();
+
+                            TipoSnack tipoSnackSeleccionado = TipoSnack.verificarSnack(nombreSnack);
+                            ProductoSnack productoSnack = new ProductoSnack(i, tipoSnackSeleccionado);
+
+                            listaSnack.add(productoSnack);
+
+                            try {
+                                controladoraProducto.verificarYActualizarStockPersonalizada(listaSnack);
+                            }catch (DisponibilidadAgotadaException e){
+                                System.out.println(e.getMessage());
+                            }catch (Exception e){
+                                System.out.println(e.getMessage());
+                            }
+                            i++;
+                            System.out.println("Desea agregar otro snack?");
+                            filtradoSnack = scanner.nextLine();
+                        }while (filtradoSnack.equalsIgnoreCase("si"));
+
+                        System.out.println("SNACKS SELECCIONADOS: ");
+                        for (ProductoSnack productoSnack : listaSnack){
+                            System.out.println(productoSnack);
+                        }
                     }
 
                     //Mostrar Bebida, elegi el tipo de bebida que quieras, si quiere otro mas lo va a agregar, que cuando
                     //Termina se mete en una lista
-                    List<ProductoBebida> listaDeBebida = new ArrayList<>();
-                    try {
-                        controladoraProducto.verificarYActualizarStockPersonalizada(listaDeBebida);
+                    System.out.println("Desea comprar Bebida? (si/no): ");
+                    String filtradoBebida = scanner.nextLine();
+                    //si desea comprar bebida:
 
-                    }catch (DisponibilidadAgotadaException e){
-                        System.out.println(e.getMessage());
-                    }catch (Exception e){
-                        System.out.println(e.getMessage());
+                    List<ProductoBebida> listaDeBebida = new ArrayList<>();
+
+                    if(filtradoBebida.equalsIgnoreCase("si")){
+                        controladoraProducto.mostrarPoductoBebida();
+                        do{
+                            System.out.println("Elija una bebida: ");
+                            String nombreBebida = scanner.nextLine();
+
+                            TipoBebida tipobebidaSeleccionada = TipoBebida.verificarBebida(nombreBebida);
+                            ProductoBebida productoBebida = new ProductoBebida(i, tipobebidaSeleccionada);
+
+                            listaDeBebida.add(productoBebida);
+
+                            try {
+                                controladoraProducto.verificarYActualizarStockPersonalizada(listaDeBebida);
+                            }catch (DisponibilidadAgotadaException e){
+                                System.out.println(e.getMessage());
+                            }catch (Exception e){
+                                System.out.println(e.getMessage());
+                            }
+                            i++;
+                            System.out.println("Desea agregar otra bebida?");
+                            filtradoBebida = scanner.nextLine();
+                        }while (filtradoBebida.equalsIgnoreCase("si"));
+
+                        System.out.println("BEBIDAS SELECCIONADAS: ");
+                        for (ProductoBebida productoBebida : listaDeBebida){
+                            System.out.println(productoBebida);
+                        }
                     }
 
                     //Cuando tengamos todas las listas hacemos el new de picada y el new de pedido
-                    Picada picada = new PicadaPersonalizada(listaDeQueso,listaDeFiambre,listaDeSnack,listaDeBebida);
+                    Picada picada = new PicadaPersonalizada(listaDeQueso,listaDeFiambre,listaSnack,listaDeBebida);
                     break;
 
                 case 2:
+                    //mostrar combos predefinidos
+                    System.out.println("Combos disponibles: ");
+                    controladoraProducto.mostrarCombos();
+                    System.out.println("Ingrese el nombre del combo que desea elegir: ");
+                    scanner.nextLine();
+                    String nombreComboSeleccionado = scanner.nextLine();
+                    try {
+                        controladoraProducto.elegirPicadaPredefinida(nombreComboSeleccionado);
+                        controladoraProducto.mostrarComboSeleccionado(nombreComboSeleccionado);
+                    }catch (DisponibilidadAgotadaException e){
+                        System.out.println(e.getMessage());
+                    }
+
 
                     break;
 

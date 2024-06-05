@@ -31,4 +31,9 @@ public class ProductoFiambre extends Producto{
         jsonObject.put("tipoFiambre", tipoFiambre.getNombre());
         return jsonObject;
     }
+
+    @Override
+    public String toString() {
+        return "Fiambre = " + tipoFiambre;
+    }
 }
