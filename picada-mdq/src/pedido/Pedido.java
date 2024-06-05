@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pedido<T> implements IPedido{
-    private List<T> picadas;
+    private T picadas;
     private int id;
     private boolean envio;
     private String tipoPicada;
@@ -26,7 +26,7 @@ public class Pedido<T> implements IPedido{
         this.precioFinalPedido = 0;
     }
 
-    public Pedido(List<T> picadas, int id, boolean envio, String tipoPicada, double precioFinalPedido) {
+    public Pedido(T picadas, int id, boolean envio, String tipoPicada, double precioFinalPedido) {
         this.picadas = picadas;
         this.id = id;
         this.envio = envio;
@@ -34,15 +34,15 @@ public class Pedido<T> implements IPedido{
         this.precioFinalPedido = precioFinalPedido;
     }
 
-    public Pedido(T pedidos) {
-        this.pedidos = pedidos;
+    public Pedido(T picadas) {
+        this.picadas = picadas;
     }
 
     //GETTERS
 
 
-    public T getPedidos() {
-        return pedidos;
+    public T getPicadas() {
+        return picadas;
     }
 
     public int getId() {

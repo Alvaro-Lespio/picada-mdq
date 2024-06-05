@@ -3,6 +3,7 @@ package SesionDeUsuario;
 import Apis.JsonUtiles;
 import Producto.*;
 import Producto.Excepciones.DisponibilidadAgotadaException;
+import Producto.tipo.TipoQueso;
 import SesionDeUsuario.Excepciones.ContraseniaIncorrectaException;
 import SesionDeUsuario.Excepciones.UsuarioNoEncontradoException;
 import SesionDeUsuario.Excepciones.UsuarioRepetidoException;
@@ -19,20 +20,21 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Ejecucion {
-    static Scanner scanner;
+    static Scanner scanner = new Scanner(System.in);
     public static void ejecucion() throws IOException, JSONException {
         System.out.println("\t BIENVENIDO/S A PICADA MDQ!!");
 
             ControladoraProducto controladoraProducto = new ControladoraProducto();
+        /*
         try{//Esto se hace una sola vez
-
             controladoraProducto.cargarProductos();
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+        */
 
         boolean salir = false;
-        Usuario usuario =null; //Usuario a cargar
+        Usuario usuario = null; //Usuario a cargar
         do{
             ControladoraUsuario controladoraUsuario = new ControladoraUsuario();
             try {
@@ -129,18 +131,47 @@ public class Ejecucion {
                     //Pedirle al usuario que ingrese los quesos, fiambres,etc, y en base a eso llenar el cosntructor.
                     //Mostrar quesos, elegi el tipo de queso que quieras, si quiere otro mas lo va a agregar, que cuando
                     //Termina se mete en una lista
+                    int i = 1;
+                    System.out.println("¿Desea comprar queso? (si/no): ");
+                    scanner.nextLine();
+                    String filtradoQueso = scanner.nextLine();
+                    //Si desea comprar queso:
                     List<ProductoQueso> listaDeQueso = new ArrayList<>();
-                    try {
-                        controladoraProducto.verificarYActualizarStockPersonalizada(listaDeQueso);
 
-                    }catch (DisponibilidadAgotadaException e){
-                        System.out.println(e.getMessage());
-                    }catch (Exception e){
-                        System.out.println(e.getMessage());
+                    if(filtradoQueso.equalsIgnoreCase("si")) {
+                        controladoraProducto.mostrarPoductoQueso();
+                        do {
+                            System.out.println("Elija un queso: ");
+                            String nombreQueso = scanner.nextLine();
+
+                            TipoQueso tipoQuesoSeleccionado = TipoQueso.verificarQueso(nombreQueso);
+                            ProductoQueso productoQueso = new ProductoQueso(i, tipoQuesoSeleccionado);
+
+                            listaDeQueso.add(productoQueso);
+
+                            try {
+                                controladoraProducto.verificarYActualizarStockPersonalizada(listaDeQueso);
+
+                            } catch (DisponibilidadAgotadaException e) {
+                                System.out.println(e.getMessage());
+                            } catch (Exception e) {
+                                System.out.println(e.getMessage());
+                            }
+                            i++;
+                            System.out.println("Desea agregar otro queso?");
+                            filtradoQueso = scanner.nextLine();
+
+                        } while (filtradoQueso.equalsIgnoreCase("si"));
+
+                        System.out.println("QUESOS SELECCIONADOS: ");
+                        for (ProductoQueso productoQueso : listaDeQueso){
+                            System.out.println(productoQueso);
+                        }
                     }
 
                     //Mostrar Fiambre, elegi el tipo de fiambre que quieras, si quiere otro mas lo va a agregar, que cuando
                     //Termina se mete en una lista
+
                     List<ProductoFiambre> listaDeFiambre = new ArrayList<>();
                     try {
                         controladoraProducto.verificarYActualizarStockPersonalizada(listaDeFiambre);
@@ -200,20 +231,28 @@ public class Ejecucion {
         System.out.println("Ingrese nombre: ");
         scanner.nextLine();
         String nombre = scanner.nextLine();
+
         System.out.println("Ingrese apellido: ");
         String apellido = scanner.nextLine();
+
         System.out.println("Ingrese calle: ");
-        scanner.nextLine();
         String calle = scanner.nextLine();
+
         System.out.println("Ingrese numero de calle: ");
         int numeroCalle = scanner.nextInt();
+
         System.out.println("Ingrese mail: ");
+        scanner.nextLine();
         String mail = scanner.nextLine();
+
         System.out.println("Ingrese nombre de usuario: ");
         String nombreUsuario = scanner.nextLine();
+
         System.out.println("Ingrese contrasena: ");
         String contrasena = scanner.nextLine();
+
         int puntos = 0;
+
         System.out.println("Ingrese monto: ");
         double monto = scanner.nextDouble();
         boolean isAdmin = false;

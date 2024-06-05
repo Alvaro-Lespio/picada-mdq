@@ -12,6 +12,9 @@ public abstract class Producto {
         this.stock = stock;
     }
 
+    public Producto() {
+    }
+
     public double getStock() {
         return stock;
     }

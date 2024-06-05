@@ -18,6 +18,7 @@ import picada.PicadaPreDefinida;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 //lo que vamos a hacer aca es cargar e interactuar directo con el JSON
@@ -219,10 +220,10 @@ public class ControladoraProducto {
             if(picada.getNombreCombo().equalsIgnoreCase(nombreComboSeleccionada)){
                 if(picada.getStockCombo()> 0){
                     picada.setStockCombo(picada.getStockCombo()-1);
-                    JsonUtiles.grabar(new JSONArray(picadas), "picadas.json");
+                    JsonUtiles.grabar(new JSONArray(picadas), "picadas");
                     picadaPedido = picada;
                 }else{
-                    throw new ComboAgotadoException(""); //-> crear la excepcion
+                    throw new ComboAgotadoException("No hay mas stock de combos!");
                 }
             }
         }
@@ -232,7 +233,7 @@ public class ControladoraProducto {
     public void verificarYActualizarStockPersonalizada(List<? extends Producto> producto) throws DisponibilidadAgotadaException {
             verificarProductos(producto);
         // Guardar el nuevo stock en el JSON
-        JsonUtiles.grabar(new JSONArray(productos), "productos.json");
+        JsonUtiles.grabar(new JSONArray(productos), "productos");
     }
 
     private void verificarProductos(List<? extends Producto> productosEnPicada) throws DisponibilidadAgotadaException {
@@ -254,7 +255,34 @@ public class ControladoraProducto {
             }
         }
     }
+    public void mostrarProducto(Class<? extends Producto> tipoProducto){
+        Iterator<Producto> it = productos.iterator();
+        while (it.hasNext()) {
+             Producto producto = (Producto) it.next();
+            if (tipoProducto.isInstance(producto)) {
+                if (producto instanceof ProductoBebida) {
+                    ProductoBebida bebida = (ProductoBebida) producto;
+                    System.out.println("Bebida: " + bebida.getTipoBebida() + ", Stock: " + bebida.getStock());
+                } else if (producto instanceof ProductoQueso) {
+                    ProductoQueso queso = (ProductoQueso) producto;
+                    System.out.println("Queso: " + queso.getTipoQueso() + ", Stock: " + queso.getStock());
+                } else if (producto instanceof ProductoFiambre) {
+                    ProductoFiambre fiambre = (ProductoFiambre) producto;
+                    System.out.println("Fiambre: " + fiambre.getTipoFiambre() + ", Stock: " + fiambre.getStock());
+                } else if (producto instanceof ProductoSnack) {
+                    ProductoSnack snack = (ProductoSnack) producto;
+                    System.out.println("Snack: " + snack.getTipoSnack() + ", Stock: " + snack.getStock());
+                } else {
+                    System.out.println("Producto desconocido, Stock: " + producto.getStock());
+                }
+            }
+        }
 
+    }
+
+    public void mostrarPoductoQueso(){
+        mostrarProducto(ProductoQueso.class);
+    }
 
     public HashSet<Producto> getProductos() {
         return productos;

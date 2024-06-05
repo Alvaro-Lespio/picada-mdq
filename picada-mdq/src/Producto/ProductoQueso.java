@@ -12,6 +12,8 @@ public class ProductoQueso extends Producto{
         this.tipoQueso = tipoQueso;
     }
 
+    public ProductoQueso() {
+    }
 
     public TipoQueso getTipoQueso() {
         return tipoQueso;
@@ -31,5 +33,11 @@ public class ProductoQueso extends Producto{
         jsonObject.put("stock", getStock());
         jsonObject.put("TipoQueso", tipoQueso.getNombre());
         return jsonObject;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Queso = " + tipoQueso;
     }
 }

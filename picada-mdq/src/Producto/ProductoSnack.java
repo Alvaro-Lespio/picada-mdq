@@ -12,10 +12,6 @@ public class ProductoSnack extends Producto{
         this.tipoSnack = tipoSnack;
     }
 
-    @Override
-    public void actualizarStock() {
-
-    }
 
     public TipoSnack getTipoSnack() {
         return tipoSnack;

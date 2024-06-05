@@ -78,7 +78,7 @@ public class Usuario extends Persona{
 
         JSONArray arrayPedidos = new JSONArray();
         for(int i=0; i<pedidos.size(); i++){
-            arrayPedidos.put(pedidos.get(i));//falta agregar el .pedidoToJSON
+            arrayPedidos.put(pedidos.get(i).pedidoToJSON());//falta agregar el .pedidoToJSON
         }
         jsonObject.put("pedidos", arrayPedidos);
 
