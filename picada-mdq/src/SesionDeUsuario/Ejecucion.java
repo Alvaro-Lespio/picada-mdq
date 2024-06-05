@@ -1,9 +1,8 @@
 package SesionDeUsuario;
 
 import Apis.JsonUtiles;
-import Producto.ControladoraProducto;
+import Producto.*;
 import Producto.Excepciones.DisponibilidadAgotadaException;
-import Producto.ProductoQueso;
 import SesionDeUsuario.Excepciones.ContraseniaIncorrectaException;
 import SesionDeUsuario.Excepciones.UsuarioNoEncontradoException;
 import SesionDeUsuario.Excepciones.UsuarioRepetidoException;
@@ -140,16 +139,42 @@ public class Ejecucion {
                         System.out.println(e.getMessage());
                     }
 
-
                     //Mostrar Fiambre, elegi el tipo de fiambre que quieras, si quiere otro mas lo va a agregar, que cuando
                     //Termina se mete en una lista
-                    List<ProductoQueso> listaDeFiambre = new ArrayList<>();
-                    controladoraProducto.verificarYActualizarStockPersonalizada(listaDeQueso);
+                    List<ProductoFiambre> listaDeFiambre = new ArrayList<>();
+                    try {
+                        controladoraProducto.verificarYActualizarStockPersonalizada(listaDeFiambre);
+                    }catch (DisponibilidadAgotadaException e){
+                        System.out.println(e.getMessage());
+                    }catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
+
+                    //Mostrar Snack, elegi el tipo de snack que quieras, si quiere otro mas lo va a agregar, que cuando
+                    //Termina se mete en una lista
+                    List<ProductoSnack> listaDeSnack = new ArrayList<>();
+                    try {
+                        controladoraProducto.verificarYActualizarStockPersonalizada(listaDeSnack);
+                    }catch (DisponibilidadAgotadaException e){
+                        System.out.println(e.getMessage());
+                    }catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
+
+                    //Mostrar Bebida, elegi el tipo de bebida que quieras, si quiere otro mas lo va a agregar, que cuando
+                    //Termina se mete en una lista
+                    List<ProductoBebida> listaDeBebida = new ArrayList<>();
+                    try {
+                        controladoraProducto.verificarYActualizarStockPersonalizada(listaDeBebida);
+
+                    }catch (DisponibilidadAgotadaException e){
+                        System.out.println(e.getMessage());
+                    }catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
 
                     //Cuando tengamos todas las listas hacemos el new de picada y el new de pedido
-                    //
-                    Picada picada = new PicadaPersonalizada();
-
+                    Picada picada = new PicadaPersonalizada(listaDeQueso,listaDeFiambre,listaDeSnack,listaDeBebida);
                     break;
 
                 case 2:

@@ -1,6 +1,7 @@
 package Producto;
 
 import Apis.JsonUtiles;
+import Producto.Excepciones.ComboAgotadoException;
 import Producto.Excepciones.DisponibilidadAgotadaException;
 import Producto.tipo.TipoBebida;
 import Producto.tipo.TipoFiambre;
@@ -211,7 +212,7 @@ public class ControladoraProducto {
 
 
     // Métodos para verificar y actualizar stock
-    public Picada verificarYActualizarStockPreDefinida(String nombreComboSeleccionada){
+    public Picada verificarYActualizarStockPreDefinida(String nombreComboSeleccionada)throws ComboAgotadoException {
         Picada picadaPedido = null;
         //recorremos picada,
         for (PicadaPreDefinida picada : picadas) {
@@ -221,7 +222,7 @@ public class ControladoraProducto {
                     JsonUtiles.grabar(new JSONArray(picadas), "picadas.json");
                     picadaPedido = picada;
                 }else{
-                    throw new CombosAgotadosException(); //-> crear la excepcion
+                    throw new ComboAgotadoException(""); //-> crear la excepcion
                 }
             }
         }
