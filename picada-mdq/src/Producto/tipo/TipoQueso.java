@@ -8,6 +8,7 @@ public enum TipoQueso {
 
     private String nombre;
     private float precio;
+    
     TipoQueso(String nombre, float precio) {
         this.precio = precio;
         this.nombre = nombre;
