@@ -1,22 +1,22 @@
 package Producto.tipo;
 
 public enum TipoQueso {
-    REGGIANITO("reggianito", 1.0f),
-    ROQUEFORT("roquefort", 1.0f),
-    CHEDDAR("cheddar", 1.0f),
-    GOUDA("gouda", 1.0f),
-    DE_MAQUINA("de maquina", 1.0f),
-    MAR_DEL_PLATA("mar del plata", 1.0F);
+    REGGIANITO("reggianito", 2.0),
+    ROQUEFORT("roquefort", 3.0),
+    CHEDDAR("cheddar", 2.0),
+    GOUDA("gouda", 5.0),
+    DE_MAQUINA("de maquina", 6.0),
+    MAR_DEL_PLATA("mar del plata", 9.0);
 
     private String nombre;
-    private float precio;
+    private double precio;
 
-    TipoQueso(String nombre, float precio) {
+    TipoQueso(String nombre, double precio) {
         this.precio = precio;
         this.nombre = nombre;
     }
 
-    public float getPrecio() {
+    public double getPrecio() {
         return precio;
     }
 
@@ -36,9 +36,10 @@ public enum TipoQueso {
         } else if (queso.equalsIgnoreCase("de maquina")) {
             return DE_MAQUINA;
 
-        } else {
+        } else if(queso.equalsIgnoreCase("mar del plata")){
             return MAR_DEL_PLATA;
         }
+        return null;
     }
 
 

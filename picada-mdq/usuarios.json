@@ -1,1 +1,1 @@
-[{"persona":{"apellido":"lespio","direccion":{"numero":21,"calle":"monse"},"nombre":"alvaro","email":"les"},"usuario":"alvalespio","contrasenia":"1234","pedidos":[]}]
+{"persona":{"apellido":"j","direccion":{"numero":12,"calle":"j"},"nombre":"j","email":"j"},"usuario":"j","contrasenia":"1","pedidos":[{"envio":true,"precioFinalPedido":305,"picada":"Picada{id=0, productoQuesoList=[Queso = GOUDA], productoFiambreList=[], productoSnackList=[], productoBebidaList=[], precioTotal=5.0}","id":0}]}

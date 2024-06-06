@@ -49,6 +49,7 @@ public class Usuario extends Persona{
     public ArrayList<Pedido> getPedidos() {
         return pedidos;
     }
+
     public String getNombreUsuario() {
         return nombreUsuario;
     }
@@ -78,7 +79,7 @@ public class Usuario extends Persona{
 
         JSONArray arrayPedidos = new JSONArray();
         for(int i=0; i<pedidos.size(); i++){
-            arrayPedidos.put(pedidos.get(i).pedidoToJSON());//falta agregar el .pedidoToJSON
+            arrayPedidos.put(pedidos.get(i).pedidoToJSON());
         }
         jsonObject.put("pedidos", arrayPedidos);
 

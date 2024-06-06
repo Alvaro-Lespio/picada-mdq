@@ -25,7 +25,7 @@ import java.util.Scanner;
 
 public class Ejecucion {
     static Scanner scanner = new Scanner(System.in);
-    public static void ejecucion() throws IOException, JSONException {
+    public static void ejecucion() throws Exception {
         System.out.println("\t BIENVENIDO/S A PICADA MDQ!!");
 
             ControladoraProducto controladoraProducto = new ControladoraProducto();
@@ -35,8 +35,9 @@ public class Ejecucion {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-
          */
+
+
 
         try{
             controladoraProducto.cargarPicadaPredefinida();
@@ -114,6 +115,7 @@ public class Ejecucion {
                 default:
                     System.out.println("La opcion es incorrecta");
             }
+
             JSONArray jsonArray = null;
             try{
                 jsonArray = controladoraUsuario.mapaToJson();
@@ -126,7 +128,7 @@ public class Ejecucion {
     }
 
     //FUNCION DE MENU DE PICADA
-    private static void menuPicada(Usuario usuario, ControladoraProducto controladoraProducto){
+    private static void menuPicada(Usuario usuario, ControladoraProducto controladoraProducto) throws Exception {
         boolean salir = false;
         do{
             System.out.println("\n------------------PICADA-------------------");
@@ -156,13 +158,20 @@ public class Ejecucion {
                             System.out.println("Elija un queso: ");
                             String nombreQueso = scanner.nextLine();
 
-                            TipoQueso tipoQuesoSeleccionado = TipoQueso.verificarQueso(nombreQueso);
-                            ProductoQueso productoQueso = new ProductoQueso(i, tipoQuesoSeleccionado);
+                            System.out.println("Ingrese la cantidad: ");
+                            int cantQueso = scanner.nextInt();
 
-                            listaDeQueso.add(productoQueso);
+                            TipoQueso tipoQuesoSeleccionado = TipoQueso.verificarQueso(nombreQueso);
+                            ProductoQueso productoQueso = new ProductoQueso(cantQueso, tipoQuesoSeleccionado);
+
+                            if(productoQueso.getTipoQueso()==null){
+                                System.out.println("el queso no existe");
+                            }else{
+                                listaDeQueso.add(productoQueso);
+                            }
 
                             try {
-                                controladoraProducto.verificarYActualizarStockPersonalizada(listaDeQueso);
+                                controladoraProducto.verificarYActualizarStockPersonalizada(listaDeQueso,cantQueso);
 
                             } catch (DisponibilidadAgotadaException e) {
                                 System.out.println(e.getMessage());
@@ -195,13 +204,16 @@ public class Ejecucion {
                             System.out.println("Elija un fiambre: ");
                             String nombreFiambre = scanner.nextLine();
 
+                            System.out.println("Ingrese la cantidad: ");
+                            int cantF = scanner.nextInt();
+
                             TipoFiambre tipoFiambreSeleccionado = TipoFiambre.verificarFiambre(nombreFiambre);
-                            ProductoFiambre productoFiambre = new ProductoFiambre(i, tipoFiambreSeleccionado);
+                            ProductoFiambre productoFiambre = new ProductoFiambre(cantF, tipoFiambreSeleccionado);
 
                             listaDeFiambre.add(productoFiambre);
 
                             try {
-                                controladoraProducto.verificarYActualizarStockPersonalizada(listaDeFiambre);
+                                controladoraProducto.verificarYActualizarStockPersonalizada(listaDeFiambre,cantF);
                             }catch (DisponibilidadAgotadaException e){
                                 System.out.println(e.getMessage());
                             }catch (Exception e){
@@ -234,13 +246,16 @@ public class Ejecucion {
                             System.out.println("Elija un snack: ");
                             String nombreSnack = scanner.nextLine();
 
+                            System.out.println("Ingrese la cantidad: ");
+                            int cantS = scanner.nextInt();
+
                             TipoSnack tipoSnackSeleccionado = TipoSnack.verificarSnack(nombreSnack);
-                            ProductoSnack productoSnack = new ProductoSnack(i, tipoSnackSeleccionado);
+                            ProductoSnack productoSnack = new ProductoSnack(cantS, tipoSnackSeleccionado);
 
                             listaSnack.add(productoSnack);
 
                             try {
-                                controladoraProducto.verificarYActualizarStockPersonalizada(listaSnack);
+                                controladoraProducto.verificarYActualizarStockPersonalizada(listaSnack,cantS);
                             }catch (DisponibilidadAgotadaException e){
                                 System.out.println(e.getMessage());
                             }catch (Exception e){
@@ -271,13 +286,16 @@ public class Ejecucion {
                             System.out.println("Elija una bebida: ");
                             String nombreBebida = scanner.nextLine();
 
+                            System.out.println("Ingrese la cantidad: ");
+                            int cantB = scanner.nextInt();
+
                             TipoBebida tipobebidaSeleccionada = TipoBebida.verificarBebida(nombreBebida);
-                            ProductoBebida productoBebida = new ProductoBebida(i, tipobebidaSeleccionada);
+                            ProductoBebida productoBebida = new ProductoBebida(cantB, tipobebidaSeleccionada);
 
                             listaDeBebida.add(productoBebida);
 
                             try {
-                                controladoraProducto.verificarYActualizarStockPersonalizada(listaDeBebida);
+                                controladoraProducto.verificarYActualizarStockPersonalizada(listaDeBebida,cantB);
                             }catch (DisponibilidadAgotadaException e){
                                 System.out.println(e.getMessage());
                             }catch (Exception e){
@@ -294,8 +312,26 @@ public class Ejecucion {
                         }
                     }
 
+                    System.out.println("Quiere envio? ($300): ");
+                    String confirmarEnvio = scanner.nextLine();
+                    boolean envio = false;
+                    if(confirmarEnvio.equalsIgnoreCase("si")){
+                         envio = true;
+                    }
+
                     //Cuando tengamos todas las listas hacemos el new de picada y el new de pedido
                     Picada picada = new PicadaPersonalizada(listaDeQueso,listaDeFiambre,listaSnack,listaDeBebida);
+                    Pedido<Picada> pedido = new Pedido<>(picada);
+                    pedido.setEnvio(envio);
+                    pedido.calcularTotalFinal(picada.getPrecioTotal());
+                    boolean pedidoConfirmacion = usuario.agregarPedido(pedido);
+                    JsonUtiles.grabar(usuario.usuarioToJSON(),"usuarios");
+                    if(pedidoConfirmacion){
+                        System.out.println("El pedido se guardo con exito! ");
+                    }else{
+                        System.out.println("El pedido no se guardo con exito ");
+                    }
+
                     break;
 
                 case 2:
@@ -305,18 +341,20 @@ public class Ejecucion {
                     System.out.println("Ingrese el nombre del combo que desea elegir: ");
                     scanner.nextLine();
                     String nombreComboSeleccionado = scanner.nextLine();
+
                     try {
-                        controladoraProducto.elegirPicadaPredefinida(nombreComboSeleccionado);
+                        Pedido<Picada> pedidoPredefinido = controladoraProducto.elegirPicadaPredefinida(nombreComboSeleccionado);
                         controladoraProducto.mostrarComboSeleccionado(nombreComboSeleccionado);
+                        usuario.agregarPedido(pedidoPredefinido);
+                        JsonUtiles.grabar(usuario.usuarioToJSON(), "usuarios");
+
                     }catch (DisponibilidadAgotadaException e){
                         System.out.println(e.getMessage());
                     }
-
-
                     break;
 
                 case 3:
-
+                    System.out.println(usuario.getPedidos());
                     break;
 
                 case 4:

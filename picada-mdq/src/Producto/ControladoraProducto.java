@@ -221,6 +221,7 @@ public class ControladoraProducto {
                 if(picada.getStockCombo()> 0){
                     picada.setStockCombo(picada.getStockCombo()-1);
                     picadaPedido = picada;
+                    System.out.println(picada.getTipoQueso());
                     JsonUtiles.grabar(new JSONArray(picadas), "picadas");
                 }else{
                     throw new ComboAgotadoException("No hay mas stock de combos!");
@@ -230,21 +231,21 @@ public class ControladoraProducto {
         return picadaPedido;
     }
 
-    public void verificarYActualizarStockPersonalizada(List<? extends Producto> producto) throws DisponibilidadAgotadaException {
-            verificarProductos(producto);
+    public void verificarYActualizarStockPersonalizada(List<? extends Producto> producto, int cantidadProdcutoPedido) throws DisponibilidadAgotadaException {
+            verificarProductos(producto,cantidadProdcutoPedido);
         // Guardar el nuevo stock en el JSON
         JsonUtiles.grabar(new JSONArray(productos), "productos");
     }
 
 
 
-    private void verificarProductos(List<? extends Producto> productosEnPicada) throws DisponibilidadAgotadaException {
+    private void verificarProductos(List<? extends Producto> productosEnPicada, int cantidadProdcutoPedido) throws DisponibilidadAgotadaException {
         for (Producto productoPicada : productosEnPicada) {
             boolean productoEncontrado = false;
             for (Producto productoStock : productos) {
                 if (productoPicada.getClass().equals(productoStock.getClass())) {
                     if (productoStock.getStock() >= productoPicada.getStock()) {
-                        productoStock.setStock((int) (productoStock.getStock() - productoPicada.getStock()));
+                        productoStock.setStock((int) (productoStock.getStock() - cantidadProdcutoPedido));
                         productoEncontrado = true;
                         break;
                     } else {
@@ -256,6 +257,7 @@ public class ControladoraProducto {
                 throw new DisponibilidadAgotadaException("Producto no encontrado en el stock: " + productoPicada.getClass().getSimpleName());
             }
         }
+
     }
     public void mostrarProducto(Class<? extends Producto> tipoProducto){
         Iterator<Producto> it = productos.iterator();

@@ -61,6 +61,9 @@ public class Pedido<T> implements IPedido{
         return precioFinalPedido;
     }
 
+    public void setEnvio(boolean envio) {
+        this.envio = envio;
+    }
 
     public static ArrayList<Pedido> JSONToPedido(JSONArray arrayPedidos) throws Exception{
         ArrayList<Pedido> arrayPedidosTotal = new ArrayList<>();
@@ -96,14 +99,30 @@ public class Pedido<T> implements IPedido{
         jsonObject.put("id", id);
         jsonObject.put("envio", envio);
         jsonObject.put("precioFinalPedido", precioFinalPedido);
+        jsonObject.put("tipoPicada",tipoPicada);
+        jsonObject.put("picada",picadas);
         return jsonObject;
     }
 
-    //hacer pedido
+    @Override
+    public double calcularTotalFinal(double precioProducto) {
+        precioFinalPedido = precioProducto;
+        if(envio){
+            precioFinalPedido = precioProducto + 300;
+        }
 
-    //listar pedidos
+        return precioFinalPedido;
+    }
 
-    //eliminar pedidos
 
-    //actualizar pedidos
+    @Override
+    public String toString() {
+        return "Pedido{" +
+                "picadas=" + picadas +
+                ", id=" + id +
+                ", envio=" + envio +
+                ", tipoPicada='" + tipoPicada + '\'' +
+                ", precioFinalPedido=" + precioFinalPedido +
+                '}';
+    }
 }

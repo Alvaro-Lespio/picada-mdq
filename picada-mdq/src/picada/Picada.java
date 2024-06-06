@@ -43,12 +43,18 @@ public abstract class Picada {
     }
 
     private double calcularPrecio() {
-        float precioTotalInterno = 0;
+        double precioTotalInterno = 0;
         for (ProductoQueso productoQueso : productoQuesoList) {
             precioTotalInterno += productoQueso.getTipoQueso().getPrecio();
         }
         for (ProductoFiambre productoFiambre : productoFiambreList) {
-
+            precioTotalInterno += productoFiambre.getTipoFiambre().getPrecio();
+        }
+        for (ProductoBebida productoBebida : productoBebidaList) {
+            precioTotalInterno += productoBebida.getTipoBebida().getPrecio();
+        }
+        for (ProductoSnack productoSnack : productoSnackList) {
+            precioTotalInterno += productoSnack.getTipoSnack().getPrecio();
         }
 
         return precioTotalInterno;
@@ -216,4 +222,18 @@ public abstract class Picada {
         }
         return disponibilidad;
     }
+
+    @Override
+    public String toString() {
+        return "Picada{" +
+                "id=" + id +
+                ", productoQuesoList=" + productoQuesoList +
+                ", productoFiambreList=" + productoFiambreList +
+                ", productoSnackList=" + productoSnackList +
+                ", productoBebidaList=" + productoBebidaList +
+                ", precioTotal=" + precioTotal +
+                '}';
+    }
+
+
 }

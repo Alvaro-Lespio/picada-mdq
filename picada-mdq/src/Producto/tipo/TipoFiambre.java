@@ -1,16 +1,16 @@
 package Producto.tipo;
 
 public enum TipoFiambre {
-    JAMON_COCIDO("jamon cocido",1.0f),
-    JAMON_CRUDO("jamon crudo",1.0f),
-    SALAME("salame",1.0f),
-    MORTADELA("mortadela",1.0f),
-    LOMITO("lomito",1.0f);
+    JAMON_COCIDO("jamon cocido",4.0),
+    JAMON_CRUDO("jamon crudo",6.0),
+    SALAME("salame",7.0),
+    MORTADELA("mortadela",10.0),
+    LOMITO("lomito",3.0);
 
     private String nombre;
-    private float precio;
+    private double precio;
 
-    TipoFiambre(String nombre, float precio) {
+    TipoFiambre(String nombre, double precio) {
         this.nombre = nombre;
         this.precio = precio;
     }
@@ -20,7 +20,7 @@ public enum TipoFiambre {
         return nombre;
     }
 
-    public float getPrecio() {
+    public double getPrecio() {
         return precio;
     }
 
