@@ -28,7 +28,8 @@ public class ControladoraUsuario {
         return mapaUsuarios;
     }
 
-    public void leerArchivoUsuarios() throws Exception{
+    public ArrayList<Usuario> leerArchivoUsuarios() throws Exception{
+        ArrayList<Usuario> usuarios = new ArrayList<>();
         JSONArray jsonArray = new JSONArray(JsonUtiles.leer("usuarios"));
         for(int i=0; i<jsonArray.length(); i++){
             JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -36,13 +37,14 @@ public class ControladoraUsuario {
             String contrasenia = jsonObject.getString("contrasenia");
             JSONObject persona = jsonObject.getJSONObject("persona");
             Persona persona1 = Persona.JSONToPersona(persona);
-
             JSONArray arrayPedidos = jsonObject.getJSONArray("pedidos");
             ArrayList<Pedido> arrayPedidosTotal = Pedido.JSONToPedido(arrayPedidos);
 
             Usuario usuario1 = new Usuario(persona1, nombreUsuario, contrasenia, arrayPedidosTotal);
+            usuarios.add(usuario1);
             mapaUsuarios.put(persona1.getEmail(), usuario1);
         }
+        return usuarios;
     }
 
     public Usuario verificarUsuario(String mail){
@@ -94,12 +96,21 @@ public class ControladoraUsuario {
         }
     }
 
-    public JSONArray mapaToJson() throws Exception{
+    /*public JSONArray mapaToJson() throws Exception{
         Iterator iterator = mapaUsuarios.entrySet().iterator();
         JSONArray jsonArray = new JSONArray();
         for(Map.Entry<String, Usuario> mapa : mapaUsuarios.entrySet()){
             JSONObject jsonObject =mapa.getValue().usuarioToJSON();
             jsonArray.put(jsonObject);
+        }
+        return jsonArray;
+    }
+
+     */
+    public JSONArray mapaToJson() throws Exception {
+        JSONArray jsonArray = new JSONArray();
+        for (Map.Entry<String, Usuario> entry : mapaUsuarios.entrySet()) {
+            jsonArray.put(entry.getValue().usuarioToJSON());
         }
         return jsonArray;
     }

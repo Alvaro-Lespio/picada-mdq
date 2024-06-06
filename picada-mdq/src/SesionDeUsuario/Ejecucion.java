@@ -47,11 +47,20 @@ public class Ejecucion {
 
 
         boolean salir = false;
-        Usuario usuario = null; //Usuario a cargar
+        Usuario usuario = null;//Usuario a cargar
+        ArrayList<Usuario> listaUsuarios = new ArrayList<>();
+        ControladoraUsuario controladoraUsuario = new ControladoraUsuario();
         do{
-            ControladoraUsuario controladoraUsuario = new ControladoraUsuario();
             try {
-                controladoraUsuario.leerArchivoUsuarios();
+                listaUsuarios = controladoraUsuario.leerArchivoUsuarios();
+                if(!listaUsuarios.isEmpty()){
+                    System.out.println("Usuarios cargados desde el archivo:");
+                    for(Usuario u: listaUsuarios){
+                        System.out.println(u);
+                    }
+                }else{
+                    System.out.println("No se encontraron usuarios en el archivo");
+                }
             }catch (Exception e){
                 System.out.println(e.getMessage() + "\nNo se pudo leer el archivo de usuarios");
             }
@@ -98,18 +107,18 @@ public class Ejecucion {
                 case 3://Persistencia del archivo de usuarios con sus pedidos
                     HashMap<String, Usuario> mapaUsuarios = controladoraUsuario.getMapaUsuarios();
                     if(usuario!=null){
-                        mapaUsuarios.remove(usuario.getNombreUsuario());
+                        //mapaUsuarios.remove(usuario.getNombreUsuario());
                         mapaUsuarios.put(usuario.getNombreUsuario(), usuario);
                     }
                     ControladoraUsuario nuevaControladora = new ControladoraUsuario(mapaUsuarios);
                     JSONArray jsonArray = null;
                     try{
                         jsonArray = nuevaControladora.mapaToJson();
+                        JsonUtiles.grabar(jsonArray, "usuarios");
+                        salir = true;
                     }catch (Exception e){
                         System.out.println(e.getMessage() + "\n error en la persistencia del archivo de usuarios");
                     }
-                    JsonUtiles.grabar(jsonArray, "usuarios");
-                    salir = true;
                     break;
 
                 default:
@@ -119,12 +128,13 @@ public class Ejecucion {
             JSONArray jsonArray = null;
             try{
                 jsonArray = controladoraUsuario.mapaToJson();
+                JsonUtiles.grabar(jsonArray, "usuarios");
             }catch (Exception e){
                 System.out.println(e.getMessage() + "\n error en la persistencia del archivo de usuarios");
             }
-            JsonUtiles.grabar(jsonArray, "usuarios");
             //System.out.println(usuario.usuarioToJSON().toString());
         }while (!salir);
+        //scanner.close();
     }
 
     //FUNCION DE MENU DE PICADA
@@ -358,6 +368,7 @@ public class Ejecucion {
                     break;
 
                 case 4:
+                    salir = true;
                     break;
 
                 default:
