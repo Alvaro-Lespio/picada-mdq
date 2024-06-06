@@ -29,8 +29,10 @@ public enum TipoSnack {
             return PALITOS;
         }else if(nombre.equalsIgnoreCase(MANI.getNombre())){
             return MANI;
-        }else{
+        }else if(nombre.equalsIgnoreCase(CHIZITO.getNombre())){
             return CHIZITO;
+        }else{
+            return null;
         }
     }
 

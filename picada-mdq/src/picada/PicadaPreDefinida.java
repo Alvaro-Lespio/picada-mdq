@@ -14,22 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class PicadaPreDefinida extends Picada{
-    /*
-    private List<Combo> combos;
 
-    public PicadaPreDefinida() {
-        combos = new ArrayList<>();
-    }
-
-    public PicadaPreDefinida(List<ProductoQueso> productoQuesoList, List<ProductoFiambre> productoFiambreList, List<ProductoSnack> productoSnacksList, List<ProductoBebida> productoBebidaList, double precioTotal, List<Combo> combos) {
-        super(productoQuesoList, productoFiambreList, productoSnacksList, productoBebidaList, precioTotal);
-        this.combos = combos;
-    }
-
-    public List<Combo> getCombos() {
-        return combos;
-    }
-    */
     private String nombreCombo;
     private String descripcion;
     private int cantPersonas;

@@ -202,12 +202,12 @@ public class ControladoraProducto {
 
 
     //elegir picada predefinida
-    public Pedido<Picada> elegirPicadaPredefinida(String nombrePicadaSeleccionada) throws DisponibilidadAgotadaException {
+    public Picada elegirPicadaPredefinida(String nombrePicadaSeleccionada) throws DisponibilidadAgotadaException {
         //en base al nombre de la picada, tenemos que hacer un equals y buscar ese combo y restarle el stock
-        Picada picadaPedido = verificarYActualizarStockPreDefinida(nombrePicadaSeleccionada);
+        Picada picada = null;
+        picada = verificarYActualizarStockPreDefinida(nombrePicadaSeleccionada);
 
-        Pedido<Picada> pedido = new Pedido<>(picadaPedido);
-        return pedido;
+        return picada;
     }
 
 
@@ -217,11 +217,12 @@ public class ControladoraProducto {
         Picada picadaPedido = null;
         //recorremos picada,
         for (PicadaPreDefinida picada : picadas) {
+            System.out.println(picada);
             if(picada.getNombreCombo().equalsIgnoreCase(nombreComboSeleccionada)){
                 if(picada.getStockCombo()> 0){
                     picada.setStockCombo(picada.getStockCombo()-1);
                     picadaPedido = picada;
-                    System.out.println(picada.getTipoQueso());
+                    System.out.println("antes de grabar" + picadaPedido);
                     JsonUtiles.grabar(new JSONArray(picadas), "picadas");
                 }else{
                     throw new ComboAgotadoException("No hay mas stock de combos!");
@@ -232,14 +233,17 @@ public class ControladoraProducto {
     }
 
     public void verificarYActualizarStockPersonalizada(List<? extends Producto> producto, int cantidadProdcutoPedido) throws DisponibilidadAgotadaException {
-            verificarProductos(producto,cantidadProdcutoPedido);
+        for (Producto productoPedido : producto) {
+            verificarProductos(productoPedido, cantidadProdcutoPedido);
+        }
         // Guardar el nuevo stock en el JSON
         JsonUtiles.grabar(new JSONArray(productos), "productos");
     }
 
 
 
-    private void verificarProductos(List<? extends Producto> productosEnPicada, int cantidadProdcutoPedido) throws DisponibilidadAgotadaException {
+    private void verificarProductos(Producto productosEnPicada, int cantidadProdcutoPedido) throws DisponibilidadAgotadaException {
+        /*
         for (Producto productoPicada : productosEnPicada) {
             boolean productoEncontrado = false;
             for (Producto productoStock : productos) {
@@ -256,6 +260,68 @@ public class ControladoraProducto {
             if (!productoEncontrado) {
                 throw new DisponibilidadAgotadaException("Producto no encontrado en el stock: " + productoPicada.getClass().getSimpleName());
             }
+        }
+        */
+        boolean productoEncontrado = false;
+        for (Producto productoStock : productos) {
+            // Verifica que el tipo del producto en picada y en stock sean iguales
+            if (productosEnPicada instanceof ProductoQueso && productoStock instanceof ProductoQueso) {
+                ProductoQueso quesoEnPicada = (ProductoQueso) productosEnPicada;
+                ProductoQueso quesoEnStock = (ProductoQueso) productoStock;
+
+                if (quesoEnPicada.getTipoQueso().equals(quesoEnStock.getTipoQueso())) {
+                    if (quesoEnStock.getStock() >= cantidadProdcutoPedido) {
+                        quesoEnStock.setStock(quesoEnStock.getStock() - cantidadProdcutoPedido);
+                        productoEncontrado = true;
+                        break;
+                    } else {
+                        throw new DisponibilidadAgotadaException("Stock insuficiente para el queso: " + quesoEnPicada.getTipoQueso());
+                    }
+                }
+            } else if (productosEnPicada instanceof ProductoFiambre && productoStock instanceof ProductoFiambre) {
+                ProductoFiambre fiambreEnPicada = (ProductoFiambre) productosEnPicada;
+                ProductoFiambre fiambreEnStock = (ProductoFiambre) productoStock;
+
+                if (fiambreEnPicada.getTipoFiambre().equals(fiambreEnStock.getTipoFiambre())) {
+                    if (fiambreEnStock.getStock() >= cantidadProdcutoPedido) {
+                        fiambreEnStock.setStock(fiambreEnStock.getStock() - cantidadProdcutoPedido);
+                        productoEncontrado = true;
+                        break;
+                    } else {
+                        throw new DisponibilidadAgotadaException("Stock insuficiente para el fiambre: " + fiambreEnPicada.getTipoFiambre());
+                    }
+                }
+            } else if (productosEnPicada instanceof ProductoSnack && productoStock instanceof ProductoSnack) {
+                ProductoSnack snackEnPicada = (ProductoSnack) productosEnPicada;
+                ProductoSnack snackEnStock = (ProductoSnack) productoStock;
+
+                if (snackEnPicada.getTipoSnack().equals(snackEnStock.getTipoSnack())) {
+                    if (snackEnStock.getStock() >= cantidadProdcutoPedido) {
+                        snackEnStock.setStock(snackEnStock.getStock() - cantidadProdcutoPedido);
+                        productoEncontrado = true;
+                        break;
+                    } else {
+                        throw new DisponibilidadAgotadaException("Stock insuficiente para el snack: " + snackEnPicada.getTipoSnack());
+                    }
+                }
+            } else if (productosEnPicada instanceof ProductoBebida && productoStock instanceof ProductoBebida) {
+                ProductoBebida bebidaEnPicada = (ProductoBebida) productosEnPicada;
+                ProductoBebida bebidaEnStock = (ProductoBebida) productoStock;
+
+                if (bebidaEnPicada.getTipoBebida().equals(bebidaEnStock.getTipoBebida())) {
+                    if (bebidaEnStock.getStock() >= cantidadProdcutoPedido) {
+                        bebidaEnStock.setStock(bebidaEnStock.getStock() - cantidadProdcutoPedido);
+                        productoEncontrado = true;
+                        break;
+                    } else {
+                        throw new DisponibilidadAgotadaException("Stock insuficiente para la bebida: " + bebidaEnPicada.getTipoBebida());
+                    }
+                }
+            }
+        }
+
+        if (!productoEncontrado) {
+            throw new DisponibilidadAgotadaException("Producto no encontrado en el stock: " + productosEnPicada.getClass().getSimpleName());
         }
 
     }

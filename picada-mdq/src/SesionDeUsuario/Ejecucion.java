@@ -47,7 +47,7 @@ public class Ejecucion {
 
 
         boolean salir = false;
-        Usuario usuario = null;//Usuario a cargar
+        Usuario usuario = null;
         ArrayList<Usuario> listaUsuarios = new ArrayList<>();
         ControladoraUsuario controladoraUsuario = new ControladoraUsuario();
         do{
@@ -58,8 +58,6 @@ public class Ejecucion {
                     for(Usuario u: listaUsuarios){
                         System.out.println(u);
                     }
-                }else{
-                    System.out.println("No se encontraron usuarios en el archivo");
                 }
             }catch (Exception e){
                 System.out.println(e.getMessage() + "\nNo se pudo leer el archivo de usuarios");
@@ -82,14 +80,14 @@ public class Ejecucion {
                     String contrasenia = scanner.nextLine();
                     try{
                         usuario = controladoraUsuario.iniciarSesion(mail, contrasenia);
+                            System.out.println("\nIngreso exitoso!");
+                            menuPicada(usuario, controladoraProducto);
                     }catch (UsuarioNoEncontradoException e){ //Si el mail del usuario no existe dentro del sistema lanza la excepcion
                         System.out.println(e.getMessage());
                     }catch (ContraseniaIncorrectaException e){//Si la contraseña del usuario no existe dentro del sistema lanza la excepcion
                         System.out.println(e.getMessage());
-                    }
-                    if(usuario!=null){//Si el usuario ingresó correctamente
-                        System.out.println("\nIngreso exitoso!");
-                        menuPicada(usuario, controladoraProducto);
+                    }catch (Exception e){
+                        System.out.println(e.getMessage());
                     }
                     break;
 
@@ -140,13 +138,15 @@ public class Ejecucion {
     //FUNCION DE MENU DE PICADA
     private static void menuPicada(Usuario usuario, ControladoraProducto controladoraProducto) throws Exception {
         boolean salir = false;
+        ArrayList<Picada> picadas = new ArrayList<>();
         do{
             System.out.println("\n------------------PICADA-------------------");
             System.out.println("Ingrese la opcion que desea realizar: ");
             System.out.println("OPCION 1: ARMAR PICADA PERSONALIZADA");
             System.out.println("OPCION 2: ELEGIR PICADA PREDEFINIDA");
-            System.out.println("OPCION 3: VER MIS PEDIDOS");
-            System.out.println("OPCION 4: Salir");
+            System.out.println("OPCION 3: FINALIZAR PEDIDO");
+            System.out.println("OPCION 4: VER MIS PEDIDOS");
+            System.out.println("OPCION 5: Salir");
             System.out.println("-----------------------------------------------");
             System.out.println("Ingrese su opción aquí: ");
             int opcion = scanner.nextInt();
@@ -155,7 +155,6 @@ public class Ejecucion {
                     //Pedirle al usuario que ingrese los quesos, fiambres,etc, y en base a eso llenar el constructor.
                     //Mostrar quesos, elegi el tipo de queso que quieras, si quiere otro mas lo va a agregar, que cuando
                     //Termina se mete en una lista
-                    int i = 1;
                     System.out.println("¿Desea comprar queso? (si/no): ");
                     scanner.nextLine();
                     String filtradoQueso = scanner.nextLine();
@@ -182,14 +181,13 @@ public class Ejecucion {
 
                             try {
                                 controladoraProducto.verificarYActualizarStockPersonalizada(listaDeQueso,cantQueso);
-
                             } catch (DisponibilidadAgotadaException e) {
                                 System.out.println(e.getMessage());
                             } catch (Exception e) {
                                 System.out.println(e.getMessage());
                             }
-                            i++;
                             System.out.println("Desea agregar otro queso?");
+                            scanner.nextLine();
                             filtradoQueso = scanner.nextLine();
 
                         } while (filtradoQueso.equalsIgnoreCase("si"));
@@ -220,7 +218,11 @@ public class Ejecucion {
                             TipoFiambre tipoFiambreSeleccionado = TipoFiambre.verificarFiambre(nombreFiambre);
                             ProductoFiambre productoFiambre = new ProductoFiambre(cantF, tipoFiambreSeleccionado);
 
-                            listaDeFiambre.add(productoFiambre);
+                            if(productoFiambre.getTipoFiambre()==null){
+                                System.out.println("el fiambre no existe");
+                            }else{
+                                listaDeFiambre.add(productoFiambre);
+                            }
 
                             try {
                                 controladoraProducto.verificarYActualizarStockPersonalizada(listaDeFiambre,cantF);
@@ -229,8 +231,9 @@ public class Ejecucion {
                             }catch (Exception e){
                                 System.out.println(e.getMessage());
                             }
-                            i++;
+
                             System.out.println("Desea agregar otro fiambre?");
+                            scanner.nextLine();
                             filtradoFiambre = scanner.nextLine();
                         }while (filtradoFiambre.equalsIgnoreCase("si"));
 
@@ -261,8 +264,12 @@ public class Ejecucion {
 
                             TipoSnack tipoSnackSeleccionado = TipoSnack.verificarSnack(nombreSnack);
                             ProductoSnack productoSnack = new ProductoSnack(cantS, tipoSnackSeleccionado);
+                            if(productoSnack.getTipoSnack()==null){
+                                System.out.println("el snack no existe");
+                            }else{
+                                listaSnack.add(productoSnack);
+                            }
 
-                            listaSnack.add(productoSnack);
 
                             try {
                                 controladoraProducto.verificarYActualizarStockPersonalizada(listaSnack,cantS);
@@ -271,8 +278,9 @@ public class Ejecucion {
                             }catch (Exception e){
                                 System.out.println(e.getMessage());
                             }
-                            i++;
+
                             System.out.println("Desea agregar otro snack?");
+                            scanner.nextLine();
                             filtradoSnack = scanner.nextLine();
                         }while (filtradoSnack.equalsIgnoreCase("si"));
 
@@ -301,8 +309,11 @@ public class Ejecucion {
 
                             TipoBebida tipobebidaSeleccionada = TipoBebida.verificarBebida(nombreBebida);
                             ProductoBebida productoBebida = new ProductoBebida(cantB, tipobebidaSeleccionada);
-
-                            listaDeBebida.add(productoBebida);
+                            if(productoBebida.getTipoBebida()==null){
+                                System.out.println("la bebida no existe");
+                            }else{
+                                listaDeBebida.add(productoBebida);
+                            }
 
                             try {
                                 controladoraProducto.verificarYActualizarStockPersonalizada(listaDeBebida,cantB);
@@ -311,8 +322,9 @@ public class Ejecucion {
                             }catch (Exception e){
                                 System.out.println(e.getMessage());
                             }
-                            i++;
+
                             System.out.println("Desea agregar otra bebida?");
+                            scanner.nextLine();
                             filtradoBebida = scanner.nextLine();
                         }while (filtradoBebida.equalsIgnoreCase("si"));
 
@@ -322,25 +334,8 @@ public class Ejecucion {
                         }
                     }
 
-                    System.out.println("Quiere envio? ($300): ");
-                    String confirmarEnvio = scanner.nextLine();
-                    boolean envio = false;
-                    if(confirmarEnvio.equalsIgnoreCase("si")){
-                         envio = true;
-                    }
-
-                    //Cuando tengamos todas las listas hacemos el new de picada y el new de pedido
                     Picada picada = new PicadaPersonalizada(listaDeQueso,listaDeFiambre,listaSnack,listaDeBebida);
-                    Pedido<Picada> pedido = new Pedido<>(picada);
-                    pedido.setEnvio(envio);
-                    pedido.calcularTotalFinal(picada.getPrecioTotal());
-                    boolean pedidoConfirmacion = usuario.agregarPedido(pedido);
-                    JsonUtiles.grabar(usuario.usuarioToJSON(),"usuarios");
-                    if(pedidoConfirmacion){
-                        System.out.println("El pedido se guardo con exito! ");
-                    }else{
-                        System.out.println("El pedido no se guardo con exito ");
-                    }
+                    picadas.add(picada);
 
                     break;
 
@@ -348,14 +343,17 @@ public class Ejecucion {
                     //mostrar combos predefinidos
                     System.out.println("Combos disponibles: ");
                     controladoraProducto.mostrarCombos();
+
                     System.out.println("Ingrese el nombre del combo que desea elegir: ");
                     scanner.nextLine();
+
                     String nombreComboSeleccionado = scanner.nextLine();
 
                     try {
-                        Pedido<Picada> pedidoPredefinido = controladoraProducto.elegirPicadaPredefinida(nombreComboSeleccionado);
+                        Picada picadaPredefinida = controladoraProducto.elegirPicadaPredefinida(nombreComboSeleccionado);
                         controladoraProducto.mostrarComboSeleccionado(nombreComboSeleccionado);
-                        usuario.agregarPedido(pedidoPredefinido);
+                        System.out.println(picadaPredefinida);
+                        picadas.add(picadaPredefinida);
                         JsonUtiles.grabar(usuario.usuarioToJSON(), "usuarios");
 
                     }catch (DisponibilidadAgotadaException e){
@@ -364,12 +362,40 @@ public class Ejecucion {
                     break;
 
                 case 3:
-                    System.out.println(usuario.getPedidos());
+                    System.out.println("Quiere envio? ($300): ");
+                    scanner.nextLine();
+                    String confirmarEnvio = scanner.nextLine();
+                    boolean envio = false;
+                    if(confirmarEnvio.equalsIgnoreCase("si")){
+                        envio = true;
+                    }
+
+                    //Cuando tengamos todas las listas hacemos el new de picada y el new de pedido
+
+                    Pedido<Picada> pedido = new Pedido<>(picadas);
+                    pedido.setEnvio(envio);
+                    double suma = 0;
+                    for(Picada picadita : picadas){
+                        suma = suma + picadita.getPrecioTotal();
+                    }
+                    pedido.calcularTotalFinal(suma);
+                    boolean pedidoConfirmacion = usuario.agregarPedido(pedido);
+                    if(pedidoConfirmacion){
+                        System.out.println("El pedido se guardo con exito! ");
+                    }else{
+                        System.out.println("El pedido no se guardo con exito ");
+                    }
                     break;
 
                 case 4:
+                    System.out.println(usuario.getPedidos());
+                    break;
+
+                case 5:
                     salir = true;
                     break;
+
+
 
                 default:
                     System.out.println("La opcion es incorrecta");

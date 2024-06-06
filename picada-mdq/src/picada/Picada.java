@@ -125,7 +125,8 @@ public abstract class Picada {
         return 1;
     }
 
-    public static void JSONToPicada(JSONObject picadaJson, Picada picada) throws JSONException {
+    public static Picada JSONToPicada(JSONObject picadaJson) throws JSONException {
+        Picada picada =null;
         picada.id = picadaJson.getInt("id");
         picada.precioTotal = picadaJson.getDouble("precioTotal");
 
@@ -160,6 +161,7 @@ public abstract class Picada {
             productoBebidaList.add(ProductoBebida.JSONToProductoBebida(bebidaJson));
         }
         picada.setProductoBebidaList(productoBebidaList);
+        return picada;
     }
 
     public JSONObject picadaToJSON() throws JSONException{

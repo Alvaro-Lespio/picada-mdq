@@ -32,8 +32,10 @@ public enum TipoBebida {
             return FANTA;
         }else if(bebida.equalsIgnoreCase(CERVEZA_QUILMES.getNombre())){
             return CERVEZA_QUILMES;
-        }else{
+        }else if (bebida.equalsIgnoreCase(AGUA.getNombre())){
             return AGUA;
+        }else{
+            return null;
         }
 
 

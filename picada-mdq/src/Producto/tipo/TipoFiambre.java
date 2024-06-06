@@ -33,8 +33,10 @@ public enum TipoFiambre {
             return SALAME;
         } else if (fiambre.equalsIgnoreCase(MORTADELA.getNombre())) {
             return MORTADELA;
-        } else {
+        } else if(fiambre.equalsIgnoreCase(LOMITO.getNombre())){
             return LOMITO;
+        }else{
+            return null;
         }
     }
 }

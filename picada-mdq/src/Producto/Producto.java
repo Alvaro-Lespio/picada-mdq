@@ -15,7 +15,7 @@ public abstract class Producto {
     public Producto() {
     }
 
-    public double getStock() {
+    public int getStock() {
         return stock;
     }
 

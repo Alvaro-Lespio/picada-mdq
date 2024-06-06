@@ -37,7 +37,7 @@ public class ControladoraUsuario {
             String contrasenia = jsonObject.getString("contrasenia");
             JSONObject persona = jsonObject.getJSONObject("persona");
             Persona persona1 = Persona.JSONToPersona(persona);
-            JSONArray arrayPedidos = jsonObject.getJSONArray("pedidos");
+            JSONArray arrayPedidos = jsonObject.getJSONArray("pedido");
             ArrayList<Pedido> arrayPedidosTotal = Pedido.JSONToPedido(arrayPedidos);
 
             Usuario usuario1 = new Usuario(persona1, nombreUsuario, contrasenia, arrayPedidosTotal);

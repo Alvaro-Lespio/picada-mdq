@@ -81,12 +81,10 @@ public class Usuario extends Persona{
         for(int i=0; i<pedidos.size(); i++){
             arrayPedidos.put(pedidos.get(i).pedidoToJSON());
         }
-        jsonObject.put("pedidos", arrayPedidos);
+        jsonObject.put("pedido", arrayPedidos);
 
         return jsonObject;
     }
-
-
 
     public boolean agregarPedido(Pedido pedido){
         pedidos.add(pedido);

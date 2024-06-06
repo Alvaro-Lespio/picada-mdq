@@ -10,11 +10,10 @@ import picada.PicadaPreDefinida;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Pedido<T> implements IPedido{
-    private T picadas;
+public class Pedido<T extends Picada> implements IPedido{
+    private ArrayList<T> picadas;
     private int id;
     private boolean envio;
-    private String tipoPicada;
     private double precioFinalPedido;
 
 
@@ -22,26 +21,24 @@ public class Pedido<T> implements IPedido{
         this.picadas = null;
         this.id = 0;
         this.envio = false;
-        this.tipoPicada = "";
         this.precioFinalPedido = 0;
     }
 
-    public Pedido(T picadas, int id, boolean envio, String tipoPicada, double precioFinalPedido) {
+    public Pedido(ArrayList<T> picadas, int id, boolean envio, double precioFinalPedido) {
         this.picadas = picadas;
         this.id = id;
         this.envio = envio;
-        this.tipoPicada = tipoPicada;
         this.precioFinalPedido = precioFinalPedido;
     }
 
-    public Pedido(T picadas) {
+    public Pedido(ArrayList<T> picadas) {
         this.picadas = picadas;
     }
 
     //GETTERS
 
 
-    public T getPicadas() {
+    public ArrayList<T> getPicadas() {
         return picadas;
     }
 
@@ -53,9 +50,6 @@ public class Pedido<T> implements IPedido{
         return envio;
     }
 
-    public String getTipoPicada() {
-        return tipoPicada;
-    }
 
     public double getPrecioFinalPedido() {
         return precioFinalPedido;
@@ -72,23 +66,32 @@ public class Pedido<T> implements IPedido{
             objectPedidos = arrayPedidos.getJSONObject(i);
             int id = objectPedidos.getInt("id");
             boolean envio = objectPedidos.getBoolean("envio");
-            double precioFinal = objectPedidos.getDouble("precioFinal");
+            double precioFinal = objectPedidos.getDouble("precioFinalPedido");
 
-            Picada picada = null;
-            JSONObject picadaJSON = objectPedidos.getJSONObject("pedido");
-            String tipoPicada = objectPedidos.getString("tipoPicada");
 
-            if(tipoPicada.equals("picadaPersonalizada")){
-                picada = new PicadaPersonalizada();
-                Picada.JSONToPicada(picadaJSON, picada);
-            }else if(tipoPicada.equals("picadaPreDefinida")){
-                picada = new PicadaPreDefinida();
-                Picada.JSONToPicada(picadaJSON, picada);
-            }else{
-                //excepcion tipo picada no encontrada
+            JSONArray arrayPicadas = objectPedidos.getJSONArray("picada");
+            ArrayList<Picada> picadas= new ArrayList<>();
+            for(int j=0; j<arrayPicadas.length();j++) {
+                JSONObject objectPicada = arrayPicadas.getJSONObject(j);
+                Picada picada = null;
+                String tipoPicada = objectPicada.getString("tipoPicada");
+                if(tipoPicada.equals("picadaPersonalizada")){
+                    picada = new PicadaPersonalizada();
+                    picada = Picada.JSONToPicada(objectPicada);
+                    picadas.add(picada);
+                }else if(tipoPicada.equals("picadaPreDefinida")){
+                    picada = new PicadaPreDefinida();
+                    picada = Picada.JSONToPicada(objectPicada);
+                    picadas.add(picada);
+                }else{
+                    //excepcion tipo picada no encontrada
+                }
+
+
+
             }
 
-            Pedido pedido = new Pedido<>(picada, id, envio, tipoPicada, precioFinal);
+            Pedido pedido = new Pedido<>(picadas, id, envio, precioFinal);
             arrayPedidosTotal.add(pedido);
         }
         return arrayPedidosTotal;
@@ -99,8 +102,12 @@ public class Pedido<T> implements IPedido{
         jsonObject.put("id", id);
         jsonObject.put("envio", envio);
         jsonObject.put("precioFinalPedido", precioFinalPedido);
-        jsonObject.put("tipoPicada",tipoPicada);
-        jsonObject.put("picada",picadas);
+
+        JSONArray arrayPicadas = new JSONArray();
+        for(int i=0; i<picadas.size(); i++){
+            arrayPicadas.put(picadas.get(i).picadaToJSON());
+        }
+        jsonObject.put("picadas",arrayPicadas);
         return jsonObject;
     }
 
@@ -121,7 +128,7 @@ public class Pedido<T> implements IPedido{
                 "picadas=" + picadas +
                 ", id=" + id +
                 ", envio=" + envio +
-                ", tipoPicada='" + tipoPicada + '\'' +
+                 '\'' +
                 ", precioFinalPedido=" + precioFinalPedido +
                 '}';
     }
