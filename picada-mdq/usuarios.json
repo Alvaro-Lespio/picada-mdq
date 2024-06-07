@@ -1,1 +1,1 @@
-[{"persona":{"apellido":"ivan","direccion":{"numero":1234,"calle":"ivan"},"nombre":"ivan","email":"ivan"},"monto":1000,"pedido":[],"usuario":"ivan","contrasenia":"123"}]
+[{"persona":{"apellido":"ivan","direccion":{"numero":1234,"calle":"ivan"},"nombre":"ivan","email":"ivan"},"monto":695,"pedido":[{"envio":true,"precioFinalPedido":305,"picadas":[{"productoSnackList":[],"productoQuesoList":[{"TipoQueso":"gouda","stock":2}],"productoBebidaList":[],"id":86099097,"precioTotal":5,"productoFiambreList":[]}],"id":0}],"usuario":"ivan","contrasenia":"123"}]
