@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Clase PicadaPreDefinida que representa una picada predefinida con un conjunto de productos y características.
+ */
 public class PicadaPreDefinida extends Picada{
 
     private String nombreCombo;
@@ -24,7 +27,20 @@ public class PicadaPreDefinida extends Picada{
     private List<TipoBebida> tipoBebida;
     private int stockCombo;
 
-    public PicadaPreDefinida(String nombreCombo, String descripcion, int cantPersonas, List<TipoQueso> tipoQueso, List<TipoFiambre> tipoFiambre, List<TipoSnack> tipoSnack, List<TipoBebida> tipoBebida, int stockCombo) {
+    /**
+     * Constructor completo de la clase PicadaPreDefinida.
+     *
+     * @param nombreCombo  Nombre del combo.
+     * @param descripcion  Descripción del combo.
+     * @param cantPersonas Cantidad de personas para las que es adecuado el combo.
+     * @param tipoQueso    Lista de tipos de queso en el combo.
+     * @param tipoFiambre  Lista de tipos de fiambre en el combo.
+     * @param tipoSnack    Lista de tipos de snack en el combo.
+     * @param tipoBebida   Lista de tipos de bebida en el combo.
+     * @param stockCombo   Stock disponible del combo.
+     */
+    public PicadaPreDefinida(List<ProductoQueso> productoQuesoList, List<ProductoFiambre> productoFiambreList, List<ProductoSnack> productoSnacksList, List<ProductoBebida> productoBebidaList, String nombreCombo, String descripcion, int cantPersonas, List<TipoQueso> tipoQueso, List<TipoFiambre> tipoFiambre, List<TipoSnack> tipoSnack, List<TipoBebida> tipoBebida, int stockCombo) {
+        super(productoQuesoList, productoFiambreList, productoSnacksList, productoBebidaList);
         this.nombreCombo = nombreCombo;
         this.descripcion = descripcion;
         this.cantPersonas = cantPersonas;
@@ -35,7 +51,20 @@ public class PicadaPreDefinida extends Picada{
         this.stockCombo = stockCombo;
     }
 
-    public PicadaPreDefinida(String nombreCombo, String descripcion, int cantPersonas, List<TipoQueso> tipoQueso, List<TipoSnack> tipoSnack, List<TipoBebida> tipoBebida, int stockCombo) {
+    /**
+     * Constructor que omite el tipo de fiambre.
+     *
+     * @param nombreCombo  Nombre del combo.
+     * @param descripcion  Descripción del combo.
+     * @param cantPersonas Cantidad de personas para las que es adecuado el combo.
+     * @param tipoQueso    Lista de tipos de queso en el combo.
+     * @param tipoSnack    Lista de tipos de snack en el combo.
+     * @param tipoBebida   Lista de tipos de bebida en el combo.
+     * @param stockCombo   Stock disponible del combo.
+     */
+
+    public PicadaPreDefinida(List<ProductoQueso> productoQuesoList, List<ProductoSnack> productoSnacksList, List<ProductoBebida> productoBebidaList, String nombreCombo, String descripcion, int cantPersonas, List<TipoQueso> tipoQueso, List<TipoFiambre> tipoFiambre, List<TipoSnack> tipoSnack, List<TipoBebida> tipoBebida, int stockCombo) {
+        super(productoQuesoList,productoBebidaList, productoSnacksList );
         this.nombreCombo = nombreCombo;
         this.descripcion = descripcion;
         this.cantPersonas = cantPersonas;
@@ -45,6 +74,9 @@ public class PicadaPreDefinida extends Picada{
         this.stockCombo = stockCombo;
     }
 
+    /**
+     * Constructor por defecto de la clase PicadaPreDefinida.
+     */
     public PicadaPreDefinida() {
         this.nombreCombo = "";
         this.descripcion = "";
@@ -55,6 +87,8 @@ public class PicadaPreDefinida extends Picada{
         this.tipoBebida = null;
         this.stockCombo = 0;
     }
+
+    // Métodos Getter y Setter
 
     public String getNombreCombo() {
         return nombreCombo;
@@ -92,21 +126,38 @@ public class PicadaPreDefinida extends Picada{
         return stockCombo;
     }
 
-    //Llamar a la funcion que hice en Combo(verificarCombo) y pasarle lo que ingreso el usuario, en caso de que ingreso
-    //bien el nombre de la picada. Verificar si hay suficiente stock para la picada(va a ser una funcion del JSON verificar stock)
-    //una vez verificada, creamos la picada Predefinida y en base a eso descontamos el stock y se armaria el combo.
-
-
     @Override
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        PicadaPreDefinida that = (PicadaPreDefinida) object;
-        return Objects.equals(nombreCombo, that.nombreCombo);
+    public String toString() {
+        return "PicadaPreDefinida{" +
+                "nombreCombo='" + nombreCombo + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", cantPersonas=" + cantPersonas +
+                ", tipoQueso=" + tipoQueso +
+                ", tipoFiambre=" + tipoFiambre +
+                ", tipoSnack=" + tipoSnack +
+                ", tipoBebida=" + tipoBebida +
+                ", stockCombo=" + stockCombo +
+                '}';
     }
 
+    /**
+     * Compara esta instancia con otro objeto para verificar la igualdad.
+     *
+     * @param object el objeto con el que se va a comparar.
+     * @return true si los objetos son iguales, false en caso contrario.
+     */
+    @Override
+    public boolean equals(Object object) {
+        return super.equals(object);
+    }
+
+    /**
+     * Calcula el código hash para la instancia.
+     *
+     * @return el código hash.
+     */
     @Override
     public int hashCode() {
-        return 2;
+        return super.hashCode();
     }
 }

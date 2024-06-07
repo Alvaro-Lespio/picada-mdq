@@ -16,6 +16,8 @@ import pedido.Pedido;
 import picada.Picada;
 import picada.PicadaPersonalizada;
 import picada.PicadaPreDefinida;
+import ticket.ControladoraTicket;
+import ticket.Ticket;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,13 +40,11 @@ public class Ejecucion {
          */
 
 
-
         try{
             controladoraProducto.cargarPicadaPredefinida();
         }catch (JSONException e){
             throw new  RuntimeException(e);
         }
-
 
         boolean salir = false;
         Usuario usuario = null;
@@ -105,7 +105,6 @@ public class Ejecucion {
                 case 3://Persistencia del archivo de usuarios con sus pedidos
                     HashMap<String, Usuario> mapaUsuarios = controladoraUsuario.getMapaUsuarios();
                     if(usuario!=null){
-                        //mapaUsuarios.remove(usuario.getNombreUsuario());
                         mapaUsuarios.put(usuario.getNombreUsuario(), usuario);
                     }
                     ControladoraUsuario nuevaControladora = new ControladoraUsuario(mapaUsuarios);
@@ -130,15 +129,15 @@ public class Ejecucion {
             }catch (Exception e){
                 System.out.println(e.getMessage() + "\n error en la persistencia del archivo de usuarios");
             }
-            //System.out.println(usuario.usuarioToJSON().toString());
         }while (!salir);
-        //scanner.close();
     }
 
     //FUNCION DE MENU DE PICADA
     private static void menuPicada(Usuario usuario, ControladoraProducto controladoraProducto) throws Exception {
         boolean salir = false;
         ArrayList<Picada> picadas = new ArrayList<>();
+        ArrayList<Ticket> tickets = new ArrayList<>();
+        Pedido<Picada> pedido = new Pedido<>(picadas);
         do{
             System.out.println("\n------------------PICADA-------------------");
             System.out.println("Ingrese la opcion que desea realizar: ");
@@ -146,7 +145,9 @@ public class Ejecucion {
             System.out.println("OPCION 2: ELEGIR PICADA PREDEFINIDA");
             System.out.println("OPCION 3: FINALIZAR PEDIDO");
             System.out.println("OPCION 4: VER MIS PEDIDOS");
-            System.out.println("OPCION 5: Salir");
+            System.out.println("OPCION 5: ELIMINAR PEDIDO");
+            System.out.println("OPCION 6: RECOMENDACIONES");
+            System.out.println("OPCION 7: Salir");
             System.out.println("-----------------------------------------------");
             System.out.println("Ingrese su opción aquí: ");
             int opcion = scanner.nextInt();
@@ -159,7 +160,7 @@ public class Ejecucion {
                     scanner.nextLine();
                     String filtradoQueso = scanner.nextLine();
                     //Si desea comprar queso:
-                    List<ProductoQueso> listaDeQueso = new ArrayList<>();
+                    ArrayList<ProductoQueso> listaDeQueso = new ArrayList<>();
 
                     if(filtradoQueso.equalsIgnoreCase("si")) {
                         controladoraProducto.mostrarPoductoQueso();
@@ -204,7 +205,7 @@ public class Ejecucion {
                     String filtradoFiambre = scanner.nextLine();
                     //si desea comprar fiambre:
 
-                    List<ProductoFiambre> listaDeFiambre = new ArrayList<>();
+                    ArrayList<ProductoFiambre> listaDeFiambre = new ArrayList<>();
 
                     if(filtradoFiambre.equalsIgnoreCase("si")){
                         controladoraProducto.mostrarPoductoFiambre();
@@ -251,7 +252,7 @@ public class Ejecucion {
                     String filtradoSnack = scanner.nextLine();
                     //si desea comprar snack:
 
-                    List<ProductoSnack> listaSnack = new ArrayList<>();
+                    ArrayList<ProductoSnack> listaSnack = new ArrayList<>();
 
                     if(filtradoSnack.equalsIgnoreCase("si")){
                         controladoraProducto.mostrarPoductoSnack();
@@ -296,7 +297,7 @@ public class Ejecucion {
                     String filtradoBebida = scanner.nextLine();
                     //si desea comprar bebida:
 
-                    List<ProductoBebida> listaDeBebida = new ArrayList<>();
+                    ArrayList<ProductoBebida> listaDeBebida = new ArrayList<>();
 
                     if(filtradoBebida.equalsIgnoreCase("si")){
                         controladoraProducto.mostrarPoductoBebida();
@@ -336,7 +337,7 @@ public class Ejecucion {
 
                     Picada picada = new PicadaPersonalizada(listaDeQueso,listaDeFiambre,listaSnack,listaDeBebida);
                     picadas.add(picada);
-
+                    System.out.println(picada);
                     break;
 
                 case 2:
@@ -354,7 +355,7 @@ public class Ejecucion {
                         controladoraProducto.mostrarComboSeleccionado(nombreComboSeleccionado);
                         System.out.println(picadaPredefinida);
                         picadas.add(picadaPredefinida);
-                        JsonUtiles.grabar(usuario.usuarioToJSON(), "usuarios");
+                        //JsonUtiles.grabar(usuario.usuarioToJSON(), "usuarios");
 
                     }catch (DisponibilidadAgotadaException e){
                         System.out.println(e.getMessage());
@@ -370,21 +371,34 @@ public class Ejecucion {
                         envio = true;
                     }
 
+
                     //Cuando tengamos todas las listas hacemos el new de picada y el new de pedido
 
-                    Pedido<Picada> pedido = new Pedido<>(picadas);
+
                     pedido.setEnvio(envio);
                     double suma = 0;
                     for(Picada picadita : picadas){
                         suma = suma + picadita.getPrecioTotal();
                     }
-                    pedido.calcularTotalFinal(suma);
-                    boolean pedidoConfirmacion = usuario.agregarPedido(pedido);
-                    if(pedidoConfirmacion){
-                        System.out.println("El pedido se guardo con exito! ");
+                    suma = pedido.calcularTotalFinal(suma);
+                    boolean rta = controladoraProducto.calcularYModificarMonto(usuario,suma);
+                    if(rta){
+
+                        boolean pedidoConfirmacion = usuario.agregarPedido(pedido);
+                        Ticket ticket = ControladoraTicket.crearTicket(pedido);
+                        tickets.add(ticket);
+                        ControladoraTicket.grabar(tickets);
+                        ArrayList<Ticket> ticketUser = ControladoraTicket.leer();
+                        ControladoraTicket.mostrarTickets(ticketUser);
+                        if(pedidoConfirmacion){
+                            System.out.println("El pedido se guardo con exito! ");
+                            System.out.println("Tu monto actual es: "+usuario.getMonto());
+
+                        }
                     }else{
                         System.out.println("El pedido no se guardo con exito ");
                     }
+
                     break;
 
                 case 4:
@@ -392,6 +406,31 @@ public class Ejecucion {
                     break;
 
                 case 5:
+                    boolean borrar = false;
+                    System.out.println("Pedidos: ");
+                    System.out.println(usuario.getPedidos());
+                    System.out.println("Ingrese el id del pedido a eliminar: ");
+                    int id = scanner.nextInt();
+                    borrar = usuario.eliminarPedido(pedido,id);
+                    if(borrar){
+                        System.out.println("Pedido eliminado");
+                        System.out.println("Pedidos actualizados: ");
+                        System.out.println(usuario.getPedidos());
+                    }else{
+                        System.out.println("No se encontro el id del pedido");
+                    }
+                    break;
+
+                case 6:
+                    ArrayList<Picada> picadas1 = new ArrayList<>();
+                    System.out.println("Ingrese la cantidad de personas: ");
+                    int cantPersonas = scanner.nextInt();
+                    picadas1 = controladoraProducto.recomendarPicadaPorCantPersonas(cantPersonas);
+                    System.out.println(picadas1);
+
+                    break;
+
+                case 7:
                     salir = true;
                     break;
 
