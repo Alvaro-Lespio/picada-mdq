@@ -10,10 +10,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 
-public abstract class Picada {
+/**
+ * La clase abstracta Picada representa una picada que contiene una combinación de productos.
+ * Implementa la interfaz Serializable.
+ */
+public abstract class Picada implements Serializable {
      private int id;
      private List<ProductoQueso> productoQuesoList;
      private List<ProductoFiambre> productoFiambreList;
@@ -23,16 +30,27 @@ public abstract class Picada {
 
      //private List<Ticket> tickets;  -> recorrer con un iterador e ir guardando en un archivo.
 
-
+    /**
+     * Constructor predeterminado de Picada.
+     * Inicializa las listas de productos y el precio total.
+     */
     public Picada() {
         this.productoQuesoList = new ArrayList<>();
         this.productoFiambreList = new ArrayList<>();
         this.productoSnackList = new ArrayList<>();
         this.productoBebidaList = new ArrayList<>();
         this.precioTotal = 0.0;
-        this.id = 0;
+        this.id = generarId();
     }
 
+    /**
+     * Constructor de Picada que inicializa todas las listas de productos y calcula el precio total.
+     *
+     * @param productoQuesoList    La lista de productos de queso.
+     * @param productoFiambreList  La lista de productos de fiambre.
+     * @param productoSnacksList   La lista de productos de snack.
+     * @param productoBebidaList   La lista de productos de bebida.
+     */
     public Picada(List<ProductoQueso> productoQuesoList, List<ProductoFiambre> productoFiambreList, List<ProductoSnack> productoSnacksList, List<ProductoBebida> productoBebidaList) {
         this.id = generarId();
         this.productoQuesoList = productoQuesoList;
@@ -42,6 +60,26 @@ public abstract class Picada {
         this.precioTotal = calcularPrecio();
     }
 
+    public Picada(int id, List<ProductoQueso> productoQuesoList, List<ProductoBebida> productoBebidaList, List<ProductoSnack> productoSnackList, double precioTotal) {
+        this.id = id;
+        this.productoQuesoList = productoQuesoList;
+        this.productoBebidaList = productoBebidaList;
+        this.productoSnackList = productoSnackList;
+        this.precioTotal = precioTotal;
+    }
+
+    public Picada(List<ProductoQueso> productoQuesoList, List<ProductoBebida> productoBebidaList, List<ProductoSnack> productoSnacksList)
+    {
+        this.productoQuesoList = productoQuesoList;
+        this.productoBebidaList = productoBebidaList;
+        this.productoSnackList = productoSnackList;
+    }
+
+    /**
+     * Calcula el precio total de la picada sumando los precios de todos los productos.
+     *
+     * @return El precio total de la picada.
+     */
     private double calcularPrecio() {
         double precioTotalInterno = 0;
         for (ProductoQueso productoQueso : productoQuesoList) {
@@ -59,6 +97,8 @@ public abstract class Picada {
 
         return precioTotalInterno;
     }
+
+    // Getters y setters
 
     public List<ProductoFiambre> getProductoFiambreList() {
         return productoFiambreList;
@@ -113,18 +153,42 @@ public abstract class Picada {
         this.productoBebidaList = productoBebidaList;
     }
 
-    private int generarId(){
-
-        return 0;
+    public void setId(int id) {
+        this.id = id;
     }
 
+    /**
+     * Genera un ID para la picada.
+     *
+     * @return El ID generado.
+     */
+    private int generarId(){
 
+        Random rand= new Random();
+        return rand.nextInt(90000000) + 10000000;
+
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Picada picada = (Picada) o;
+        return id == picada.id;
+    }
 
     @Override
     public int hashCode() {
-        return 1;
+        return Objects.hashCode(id);
     }
 
+    /**
+     * Convierte un objeto JSONObject a una Picada.
+     *
+     * @param picadaJson El objeto JSONObject que representa la Picada.
+     * @return La Picada obtenida del JSONObject.
+     * @throws JSONException Si ocurre un error al leer el JSONObject.
+     */
     public static Picada JSONToPicada(JSONObject picadaJson) throws JSONException {
         Picada picada =null;
         picada.id = picadaJson.getInt("id");
@@ -164,6 +228,12 @@ public abstract class Picada {
         return picada;
     }
 
+    /**
+     * Convierte esta Picada a un objeto JSONObject.
+     *
+     * @return El objeto JSONObject que representa esta Picada.
+     * @throws JSONException Si ocurre un error al crear el JSONObject.
+     */
     public JSONObject picadaToJSON() throws JSONException{
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", id);
@@ -195,6 +265,12 @@ public abstract class Picada {
         return jsonObject;
     }
 
+    /**
+     * Verifica la disponibilidad de un tipo de producto en esta Picada.
+     *
+     * @param tipoProducto El tipo de producto a verificar.
+     * @return true si el producto está disponible, false de lo contrario.
+     */
     public boolean verificarDisponibilidad(Object tipoProducto) {
         boolean disponibilidad = false;
         if (tipoProducto instanceof TipoQueso) {
@@ -225,6 +301,11 @@ public abstract class Picada {
         return disponibilidad;
     }
 
+    /**
+     * Devuelve una representación en forma de cadena de esta Picada.
+     *
+     * @return Una cadena que representa esta Picada.
+     */
     @Override
     public String toString() {
         return "Picada{" +

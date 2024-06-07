@@ -2,6 +2,9 @@ package SesionDeUsuario;
 
 import org.json.JSONObject;
 
+/**
+ * La clase Persona representa a una persona con su información personal y de contacto.
+ */
 public class Persona {
     //Atributos
     private String nombre;
@@ -10,6 +13,10 @@ public class Persona {
     private int numero;
     private String email;
 
+    /**
+     * Constructor vacío de la clase Persona.
+     * Inicializa los atributos con valores por defecto.
+     */
     public Persona() {//Constructor vacio
         this.nombre = "";
         this.apellido = "";
@@ -18,7 +25,14 @@ public class Persona {
         this.email = "";
     }
 
-    //Constructor completo
+    /**
+     * Constructor completo de la clase Persona.
+     * @param nombre El nombre de la persona.
+     * @param apellido El apellido de la persona.
+     * @param calle El nombre de la calle de la dirección de la persona.
+     * @param numero El número de la dirección de la persona.
+     * @param email El correo electrónico de la persona.
+     */
     public Persona(String nombre, String apellido, String calle, int numero, String email) {
         this.nombre = nombre;
         this.apellido = apellido;
@@ -47,7 +61,12 @@ public class Persona {
     public String getEmail() {
         return email;
     }
-    
+
+    /**
+     * Convierte la información de la persona a un objeto JSON.
+     * @return Un objeto JSONObject que representa la información de la persona.
+     * @throws Exception Si ocurre algún error durante la conversión.
+     */
     public JSONObject personaToJSON() throws Exception{
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("nombre",nombre);
@@ -60,6 +79,12 @@ public class Persona {
         return jsonObject;
     }
 
+    /**
+     * Convierte un objeto JSON a una instancia de la clase Persona.
+     * @param persona El objeto JSON que contiene la información de la persona.
+     * @return Una instancia de la clase Persona con la información proporcionada por el objeto JSON.
+     * @throws Exception Si ocurre algún error durante la conversión.
+     */
     public static Persona JSONToPersona(JSONObject persona) throws Exception{
         String nombre = persona.getString("nombre");
         String apellido = persona.getString("apellido");
@@ -70,6 +95,11 @@ public class Persona {
         Persona persona1 = new Persona(nombre, apellido, calle, numero, email);
         return persona1;
     }
+
+    /**
+     * Devuelve una representación en forma de cadena de la información de la persona.
+     * @return Una cadena que contiene la información de la persona.
+     */
     @Override
     public String toString() {//Metodo toString para mostrar los datos de la clase persona
         return "Persona{" +

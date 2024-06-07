@@ -7,36 +7,58 @@ import picada.Picada;
 import picada.PicadaPersonalizada;
 import picada.PicadaPreDefinida;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-public class Pedido<T extends Picada> implements IPedido{
+/**
+ * La clase Pedido representa un pedido que contiene una o más Picadas.
+ * Implementa la interfaz IPedido y es Serializable.
+ *
+ * @param <T> El tipo de Picada.
+ */
+public class Pedido<T extends Picada> implements IPedido, Serializable {
     private ArrayList<T> picadas;
     private int id;
     private boolean envio;
     private double precioFinalPedido;
 
-
+    /**
+     * Constructor por defecto.
+     * Inicializa el objeto Pedido con valores predeterminados.
+     */
     public Pedido() {
         this.picadas = null;
-        this.id = 0;
+        this.id = generarId();
         this.envio = false;
         this.precioFinalPedido = 0;
     }
 
-    public Pedido(ArrayList<T> picadas, int id, boolean envio, double precioFinalPedido) {
+    /**
+     * Construye un objeto Pedido con los valores especificados.
+     *
+     * @param picadas           La lista de Picadas en el pedido.
+     * @param envio             Si el pedido incluye envío.
+     * @param precioFinalPedido El precio final del pedido.
+     */
+    public Pedido(ArrayList<T> picadas, boolean envio, double precioFinalPedido) {
         this.picadas = picadas;
-        this.id = id;
+        this.id = generarId();
         this.envio = envio;
         this.precioFinalPedido = precioFinalPedido;
     }
 
+    /**
+     * Construye un objeto Pedido con la lista de Picadas especificada.
+     *
+     * @param picadas La lista de Picadas en el pedido.
+     */
     public Pedido(ArrayList<T> picadas) {
         this.picadas = picadas;
     }
 
     //GETTERS
-
 
     public ArrayList<T> getPicadas() {
         return picadas;
@@ -46,19 +68,50 @@ public class Pedido<T extends Picada> implements IPedido{
         return id;
     }
 
-    public boolean isEnvio() {
-        return envio;
-    }
-
-
     public double getPrecioFinalPedido() {
         return precioFinalPedido;
     }
 
+    /**
+     * Devuelve si el pedido incluye envío.
+     *
+     * @return Verdadero si el pedido incluye envío, falso en caso contrario.
+     */
+    public boolean isEnvio() {
+        return envio;
+    }
+
+    /**
+     * Establece si el pedido incluye envío.
+     *
+     * @param envio Verdadero si el pedido incluye envío, falso en caso contrario.
+     */
     public void setEnvio(boolean envio) {
         this.envio = envio;
     }
 
+    public void setPicadas(ArrayList<T> picadas) {
+        this.picadas = picadas;
+    }
+
+    public void setPrecioFinalPedido(double precioFinalPedido) {
+        this.precioFinalPedido = precioFinalPedido;
+    }
+
+    private int generarId(){
+
+        Random rand= new Random();
+        return rand.nextInt(90000000) + 10000000;
+
+    }
+
+    /**
+     * Convierte un JSONArray a una lista de objetos Pedido.
+     *
+     * @param arrayPedidos El JSONArray a convertir.
+     * @return Una lista de objetos Pedido.
+     * @throws Exception Si ocurre un error durante la conversión.
+     */
     public static ArrayList<Pedido> JSONToPedido(JSONArray arrayPedidos) throws Exception{
         ArrayList<Pedido> arrayPedidosTotal = new ArrayList<>();
         for(int i=0; i<arrayPedidos.length();i++){
@@ -91,11 +144,18 @@ public class Pedido<T extends Picada> implements IPedido{
 
             }
 
-            Pedido pedido = new Pedido<>(picadas, id, envio, precioFinal);
+            Pedido pedido = new Pedido<>(picadas, envio, precioFinal);
             arrayPedidosTotal.add(pedido);
         }
         return arrayPedidosTotal;
     }
+
+    /**
+     * Convierte el objeto Pedido a un JSONObject.
+     *
+     * @return Un JSONObject que representa el objeto Pedido.
+     * @throws JSONException Si ocurre un error durante la conversión.
+     */
 
     public JSONObject pedidoToJSON() throws JSONException{
         JSONObject jsonObject = new JSONObject();
@@ -111,6 +171,12 @@ public class Pedido<T extends Picada> implements IPedido{
         return jsonObject;
     }
 
+    /**
+     * Calcula el precio total final del pedido.
+     *
+     * @param precioProducto El precio del producto.
+     * @return El precio total final del pedido.
+     */
     @Override
     public double calcularTotalFinal(double precioProducto) {
         precioFinalPedido = precioProducto;
@@ -121,7 +187,11 @@ public class Pedido<T extends Picada> implements IPedido{
         return precioFinalPedido;
     }
 
-
+    /**
+     * Devuelve una representación en forma de cadena del objeto Pedido.
+     *
+     * @return Una representación en forma de cadena del objeto Pedido.
+     */
     @Override
     public String toString() {
         return "Pedido{" +
