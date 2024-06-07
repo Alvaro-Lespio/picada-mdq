@@ -1,6 +1,4 @@
 package Producto;
-//vamos a tener los tipos de queso,fiambre y snack, + el stock
-//Vamos a trabajar con enteros simulando que son bolsas de queso, bolsas de jamon y bolsas de snack
 
 import org.json.JSONException;
 import org.json.JSONObject;

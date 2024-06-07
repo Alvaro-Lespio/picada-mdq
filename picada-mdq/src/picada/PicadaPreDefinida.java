@@ -88,7 +88,10 @@ public class PicadaPreDefinida extends Picada{
         this.stockCombo = 0;
     }
 
-    // Métodos Getter y Setter
+    /** Métodos Getter y Setter
+     *
+     *
+     */
 
     public String getNombreCombo() {
         return nombreCombo;

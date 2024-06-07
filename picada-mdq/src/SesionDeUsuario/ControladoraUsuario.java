@@ -23,21 +23,44 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * ControladoraUsuario es una clase que maneja la gestión de usuarios en el sistema.
+ * Permite registrar, iniciar sesión y cargar usuarios desde un archivo JSON.
+ */
 public class ControladoraUsuario {
     private HashMap<String, Usuario> mapaUsuarios;
 
+    /**
+     * Constructor por defecto que inicializa el mapa de usuarios.
+     */
     public ControladoraUsuario() {
         mapaUsuarios = new HashMap<>();
     }
 
+    /**
+     * Constructor que inicializa el mapa de usuarios con un mapa dado.
+     *
+     * @param mapaUsuarios Mapa de usuarios a inicializar.
+     */
     public ControladoraUsuario(HashMap<String, Usuario> mapaUsuarios) {
         this.mapaUsuarios = mapaUsuarios;
     }
 
+    /**
+     * Obtiene el mapa de usuarios.
+     *
+     * @return El mapa de usuarios.
+     */
     public HashMap<String, Usuario> getMapaUsuarios() {
         return mapaUsuarios;
     }
 
+    /**
+     * Lee el archivo JSON de usuarios y carga los datos en el mapa de usuarios.
+     *
+     * @return Lista de usuarios cargados desde el archivo JSON.
+     * @throws Exception Si ocurre un error al leer el archivo o procesar los datos.
+     */
     public ArrayList<Usuario> leerArchivoUsuarios() throws Exception{
         ArrayList<Usuario> usuarios = new ArrayList<>();
         JSONArray jsonArray = new JSONArray(JsonUtiles.leer("usuarios"));
@@ -130,7 +153,12 @@ public class ControladoraUsuario {
     }
 
 
-
+    /**
+     * Verifica si un usuario existe en el sistema a partir de su email.
+     *
+     * @param mail El email del usuario a verificar.
+     * @return El usuario encontrado o null si no se encuentra.
+     */
     public Usuario verificarUsuario(String mail){
         Usuario usuarioEncontrado = null;
         Iterator<Usuario> iterator = mapaUsuarios.values().iterator();
@@ -143,6 +171,13 @@ public class ControladoraUsuario {
         return usuarioEncontrado;
     }
 
+    /**
+     * Verifica si la contraseña proporcionada coincide con la del usuario.
+     *
+     * @param usuario     El usuario a verificar.
+     * @param contrasenia La contraseña a verificar.
+     * @return true si la contraseña coincide, false en caso contrario.
+     */
     public boolean verificarContrasenia(Usuario usuario, String contrasenia){
         boolean contraseniaEncontrada = false;
         if(usuario.getContrasenia().equals(contrasenia)){
@@ -151,6 +186,15 @@ public class ControladoraUsuario {
         return contraseniaEncontrada;
     }
 
+    /**
+     * Inicia sesión de un usuario en el sistema.
+     *
+     * @param mail        El email del usuario.
+     * @param contrasenia La contraseña del usuario.
+     * @return El usuario encontrado si las credenciales son correctas.
+     * @throws UsuarioNoEncontradoException  Si el usuario no se encuentra.
+     * @throws ContraseniaIncorrectaException Si la contraseña es incorrecta.
+     */
     public Usuario iniciarSesion(String mail, String contrasenia) throws UsuarioNoEncontradoException, ContraseniaIncorrectaException {
         Usuario usuarioABuscar = null;
         Usuario usuarioEncontrado = null;
@@ -169,6 +213,12 @@ public class ControladoraUsuario {
         return usuarioEncontrado;
     }
 
+    /**
+     * Registra un nuevo usuario en el sistema.
+     *
+     * @param usuario El usuario a registrar.
+     * @throws UsuarioRepetidoException Si el usuario ya existe.
+     */
     public void registrarse(Usuario usuario) throws UsuarioRepetidoException {
         Usuario aux = null;
         aux = verificarUsuario(usuario.getEmail());
@@ -180,16 +230,11 @@ public class ControladoraUsuario {
         }
     }
 
-    /*public JSONArray mapaToJson() throws Exception{
-        Iterator iterator = mapaUsuarios.entrySet().iterator();
-        JSONArray jsonArray = new JSONArray();
-        for(Map.Entry<String, Usuario> mapa : mapaUsuarios.entrySet()){
-            JSONObject jsonObject =mapa.getValue().usuarioToJSON();
-            jsonArray.put(jsonObject);
-        }
-        return jsonArray;
-    }
-
+    /**
+     * Convierte el mapa de usuarios a un JSONArray.
+     *
+     * @return Un JSONArray que representa el mapa de usuarios.
+     * @throws Exception Si ocurre un error durante la conversión.
      */
     public JSONArray mapaToJson() throws Exception {
         JSONArray jsonArray = new JSONArray();

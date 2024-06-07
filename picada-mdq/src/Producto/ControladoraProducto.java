@@ -440,25 +440,7 @@ public class ControladoraProducto {
 
 
     private void verificarProductos(Producto productosEnPicada, int cantidadProdcutoPedido) throws DisponibilidadAgotadaException {
-        /*
-        for (Producto productoPicada : productosEnPicada) {
-            boolean productoEncontrado = false;
-            for (Producto productoStock : productos) {
-                if (productoPicada.getClass().equals(productoStock.getClass())) {
-                    if (productoStock.getStock() >= productoPicada.getStock()) {
-                        productoStock.setStock((int) (productoStock.getStock() - cantidadProdcutoPedido));
-                        productoEncontrado = true;
-                        break;
-                    } else {
-                        throw new DisponibilidadAgotadaException("Stock insuficiente para el producto: " + productoPicada.getClass().getSimpleName());
-                    }
-                }
-            }
-            if (!productoEncontrado) {
-                throw new DisponibilidadAgotadaException("Producto no encontrado en el stock: " + productoPicada.getClass().getSimpleName());
-            }
-        }
-        */
+
         boolean productoEncontrado = false;
         for (Producto productoStock : productos) {
             // Verifica que el tipo del producto en picada y en stock sean iguales
@@ -641,6 +623,12 @@ public class ControladoraProducto {
                 '}';
     }
 
+    /**
+     * Devuelve true si el usuario tiene el monto suficiente para realizar la compra
+     * @param usuario
+     * @param suma
+     * @return
+     */
     public boolean calcularYModificarMonto(Usuario usuario,double suma){
 
         boolean rta = false;

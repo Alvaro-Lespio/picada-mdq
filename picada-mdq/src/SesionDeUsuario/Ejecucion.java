@@ -25,12 +25,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * La clase Ejecucion gestiona las interacciones con el usuario y controla el flujo de la aplicación "Picada MDQ".
+ */
 public class Ejecucion {
     static Scanner scanner = new Scanner(System.in);
+    /**
+     * Método principal que inicializa la aplicación, carga productos y picadas predefinidas, y gestiona el flujo principal de la aplicación.
+     *
+     * @throws Exception Si ocurre algún error durante la ejecución.
+     */
     public static void ejecucion() throws Exception {
         System.out.println("\t BIENVENIDO/S A PICADA MDQ!!");
 
             ControladoraProducto controladoraProducto = new ControladoraProducto();
+        /**
+         * carga de productos
+         */
         /*
         try{//Esto se hace una sola vez
             controladoraProducto.cargarProductos();
@@ -39,7 +50,9 @@ public class Ejecucion {
         }
          */
 
-
+        /**
+         * carga de picadas preDefinidas
+         */
         try{
             controladoraProducto.cargarPicadaPredefinida();
         }catch (JSONException e){
@@ -51,6 +64,9 @@ public class Ejecucion {
         ArrayList<Usuario> listaUsuarios = new ArrayList<>();
         ControladoraUsuario controladoraUsuario = new ControladoraUsuario();
         do{
+            /**
+             * leer archivo usuarios
+             */
             try {
                 listaUsuarios = controladoraUsuario.leerArchivoUsuarios();
                 if(!listaUsuarios.isEmpty()){
@@ -62,6 +78,9 @@ public class Ejecucion {
             }catch (Exception e){
                 System.out.println(e.getMessage() + "\nNo se pudo leer el archivo de usuarios");
             }
+            /**
+             * menu de usuario
+             */
             System.out.println("\n---------------------------------------");
             System.out.println("Ingrese la opcion que desea realizar: ");
             System.out.println("OPCION 1: Iniciar sesion");
@@ -71,8 +90,9 @@ public class Ejecucion {
             System.out.println("Ingrese la opción elegida aquí: ");
             int opcion = scanner.nextInt();
             switch (opcion){
-                case 1://INICIO DE SESION
-                    //Ingreso de datos del usuario
+                case 1:/** INICIO DE SESION
+                       Ingreso de datos del usuario
+                      */
                     System.out.println("Ingrese mail");
                     scanner.nextLine();
                     String mail = scanner.nextLine();
@@ -91,7 +111,10 @@ public class Ejecucion {
                     }
                     break;
 
-                case 2://REGISTRARSE
+                case 2: /**REGISTRARSE
+                        crea un nuevo usuario
+                         */
+
                     try {
                         System.out.println("\nCreacion de una nueva cuenta: ");
                         Usuario usuario2 = crearUsuario();
@@ -102,7 +125,9 @@ public class Ejecucion {
                     }
                     break;
 
-                case 3://Persistencia del archivo de usuarios con sus pedidos
+                case 3:/**
+                        Persistencia del archivo de usuarios con sus pedidos
+                       */
                     HashMap<String, Usuario> mapaUsuarios = controladoraUsuario.getMapaUsuarios();
                     if(usuario!=null){
                         mapaUsuarios.put(usuario.getNombreUsuario(), usuario);
@@ -132,7 +157,13 @@ public class Ejecucion {
         }while (!salir);
     }
 
-    //FUNCION DE MENU DE PICADA
+    /**
+     * Muestra el menú de picadas al usuario y gestiona sus opciones.
+     *
+     * @param usuario              El usuario que está interactuando con el sistema.
+     * @param controladoraProducto La controladora de productos.
+     * @throws Exception Si ocurre algún error durante la ejecución.
+     */
     private static void menuPicada(Usuario usuario, ControladoraProducto controladoraProducto) throws Exception {
         boolean salir = false;
         ArrayList<Picada> picadas = new ArrayList<>();
@@ -152,33 +183,27 @@ public class Ejecucion {
             System.out.println("Ingrese su opción aquí: ");
             int opcion = scanner.nextInt();
             switch (opcion){
-                case 1:
+                case 1:/**
+                      accedemos al menu de picadaPersonalizada y nos retorna la picada que se creo
+                     */
                         picadas = menuPicadaPersonalizada(controladoraProducto,picadas);
                     break;
 
-                case 2:
-                    //mostrar combos predefinidos
-                    System.out.println("Combos disponibles: ");
-                    controladoraProducto.mostrarCombos();
-
-                    System.out.println("Ingrese el nombre del combo que desea elegir: ");
-                    scanner.nextLine();
-
-                    String nombreComboSeleccionado = scanner.nextLine();
-
-                    try {
-                        Picada picadaPredefinida = controladoraProducto.elegirPicadaPredefinida(nombreComboSeleccionado);
-                        controladoraProducto.mostrarComboSeleccionado(nombreComboSeleccionado);
-                        System.out.println(picadaPredefinida);
-                        picadas.add(picadaPredefinida);
-                        //JsonUtiles.grabar(usuario.usuarioToJSON(), "usuarios");
-
-                    }catch (DisponibilidadAgotadaException e){
-                        System.out.println(e.getMessage());
-                    }
+                case 2:/**
+                 accedemos al menu de picadaPreDefinida y nos retorna la picada que eligio el usuario
+                 */
+                        picadas=menuPicadaPreDefinida(controladoraProducto,picadas);
                     break;
 
                 case 3:
+                    /**
+                     finaliza el pedido
+                     ofrece el envio
+                     verifica y actualiza el monto del usuario
+                     agrega el pedido al usuario
+                     imprime el ticket de la compra
+                     */
+
                     System.out.println("Quiere envio? ($300): ");
                     scanner.nextLine();
                     String confirmarEnvio = scanner.nextLine();
@@ -186,11 +211,6 @@ public class Ejecucion {
                     if(confirmarEnvio.equalsIgnoreCase("si")){
                         envio = true;
                     }
-
-
-                    //Cuando tengamos todas las listas hacemos el new de picada y el new de pedido
-
-
                     pedido.setEnvio(envio);
                     double suma = 0;
                     for(Picada picadita : picadas){
@@ -217,11 +237,16 @@ public class Ejecucion {
 
                     break;
 
-                case 4:
+                case 4:/**
+                    muestra los pedidos del usuario
+                 */
                     System.out.println(usuario.getPedidos());
                     break;
 
                 case 5:
+                    /**
+                     elimina un pedido mediante la busqueda del id
+                     */
                     boolean borrar = false;
                     System.out.println("Pedidos: ");
                     System.out.println(usuario.getPedidos());
@@ -237,7 +262,9 @@ public class Ejecucion {
                     }
                     break;
 
-                case 6:
+                case 6:/**
+                 le recomienda al usuario picadas, segun la cantidad de personas que ingrese
+                 */
                     ArrayList<Picada> picadas1 = new ArrayList<>();
                     System.out.println("Ingrese la cantidad de personas: ");
                     int cantPersonas = scanner.nextInt();
@@ -255,16 +282,19 @@ public class Ejecucion {
                 default:
                     System.out.println("La opcion es incorrecta");
             }
-        }while (!salir); //Mientras el usuario no desee salir
+        }while (!salir);
     }
+/**
+ * Muestra el menú para armar una picada personalizada.
+ *
+ * @param controladoraProducto La controladora de productos.
+ * @param picadas              La lista de picadas creadas.
+ * @return La picada para agregar al pedido.
+ */
     public static ArrayList<Picada> menuPicadaPersonalizada(ControladoraProducto controladoraProducto, ArrayList<Picada> picadas){
-        //Pedirle al usuario que ingrese los quesos, fiambres,etc, y en base a eso llenar el constructor.
-        //Mostrar quesos, elegi el tipo de queso que quieras, si quiere otro mas lo va a agregar, que cuando
-        //Termina se mete en una lista
         System.out.println("¿Desea comprar queso? (si/no): ");
         scanner.nextLine();
         String filtradoQueso = scanner.nextLine();
-        //Si desea comprar queso:
         ArrayList<ProductoQueso> listaDeQueso = new ArrayList<>();
 
         if(filtradoQueso.equalsIgnoreCase("si")) {
@@ -304,11 +334,8 @@ public class Ejecucion {
             }
         }
 
-        //Mostrar Fiambre, elegi el tipo de fiambre que quieras, si quiere otro mas lo va a agregar, que cuando
-        //Termina se mete en una lista
         System.out.println("¿Desea comprar fiambre? (si/no): ");
         String filtradoFiambre = scanner.nextLine();
-        //si desea comprar fiambre:
 
         ArrayList<ProductoFiambre> listaDeFiambre = new ArrayList<>();
 
@@ -350,12 +377,10 @@ public class Ejecucion {
         }
 
 
-        //Mostrar Snack, elegi el tipo de snack que quieras, si quiere otro mas lo va a agregar, que cuando
-        //Termina se mete en una lista
+
 
         System.out.println("Desea comprar snack? (si/no): ");
         String filtradoSnack = scanner.nextLine();
-        //si desea comprar snack:
 
         ArrayList<ProductoSnack> listaSnack = new ArrayList<>();
 
@@ -396,11 +421,8 @@ public class Ejecucion {
             }
         }
 
-        //Mostrar Bebida, elegi el tipo de bebida que quieras, si quiere otro mas lo va a agregar, que cuando
-        //Termina se mete en una lista
         System.out.println("Desea comprar Bebida? (si/no): ");
         String filtradoBebida = scanner.nextLine();
-        //si desea comprar bebida:
 
         ArrayList<ProductoBebida> listaDeBebida = new ArrayList<>();
 
@@ -447,6 +469,41 @@ public class Ejecucion {
         return picadas;
     }
 
+    /**
+     * Muestra el menú para elegir una picada preDefinida.
+     *
+     * @param controladoraProducto La controladora de productos.
+     * @param picadas              La lista de picadas creadas.
+     * @return La picada para agregar al pedido.
+     */
+    public static ArrayList<Picada> menuPicadaPreDefinida(ControladoraProducto controladoraProducto,ArrayList<Picada> picadas){
+        //mostrar combos predefinidos
+        System.out.println("Combos disponibles: ");
+        controladoraProducto.mostrarCombos();
+
+        System.out.println("Ingrese el nombre del combo que desea elegir: ");
+        scanner.nextLine();
+
+        String nombreComboSeleccionado = scanner.nextLine();
+
+        try {
+            Picada picadaPredefinida = controladoraProducto.elegirPicadaPredefinida(nombreComboSeleccionado);
+            controladoraProducto.mostrarComboSeleccionado(nombreComboSeleccionado);
+            System.out.println(picadaPredefinida);
+            picadas.add(picadaPredefinida);
+
+        }catch (DisponibilidadAgotadaException e){
+            System.out.println(e.getMessage());
+        }
+
+        return picadas;
+    }
+
+    /**
+     * Crea un usuario .
+     * le pide datos
+     * @return el nuevo usuario cargado.
+     */
     public static Usuario crearUsuario()
     {
         System.out.println("\n ---Registro de datos:---\n");
