@@ -94,6 +94,10 @@ public class Pedido<T extends Picada> implements IPedido, Serializable {
         this.picadas = picadas;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setPrecioFinalPedido(double precioFinalPedido) {
         this.precioFinalPedido = precioFinalPedido;
     }

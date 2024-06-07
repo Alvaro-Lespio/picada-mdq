@@ -28,8 +28,6 @@ public abstract class Picada implements Serializable {
      private List<ProductoBebida> productoBebidaList;
      private double precioTotal;
 
-     //private List<Ticket> tickets;  -> recorrer con un iterador e ir guardando en un archivo.
-
     /**
      * Constructor predeterminado de Picada.
      * Inicializa las listas de productos y el precio total.

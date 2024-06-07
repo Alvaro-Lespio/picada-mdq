@@ -311,11 +311,8 @@ public class ControladoraProducto {
                 List.of(TipoBebida.COCA_COLA, TipoBebida.FANTA, TipoBebida.AGUA, TipoBebida.SPRITE, TipoBebida.CERVEZA_QUILMES),
                 10
         );
-        System.out.println(p2);
-
         this.picadas.add(p1);
         this.picadas.add(p2);
-
         this.picadas.add(p3);
         this.picadas.add(p4);
         this.picadas.add(p5);
@@ -327,8 +324,6 @@ public class ControladoraProducto {
         this.picadas.add(p11);
         this.picadas.add(p12);
 
-
-        System.out.println(picadas);
         try {
             //aca obtener el valor de retorno de picadaToJSON
             JSONObject p1JSON = p1.picadaToJSON();
@@ -361,7 +356,6 @@ public class ControladoraProducto {
             picadasArray.put(p12JSON);
 
             JsonUtiles.grabar(picadasArray, "picadas");
-            System.out.println(picadasArray);
         }catch (JSONException e){
             throw new RuntimeException(e);
         }

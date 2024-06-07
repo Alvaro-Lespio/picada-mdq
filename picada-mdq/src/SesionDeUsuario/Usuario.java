@@ -1,5 +1,6 @@
 package SesionDeUsuario;
 
+import Producto.ControladoraProducto;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import pedido.Pedido;
@@ -128,6 +129,7 @@ public class Usuario extends Persona{
      */
     public boolean agregarPedido(Pedido pedido){
         pedidos.add(pedido);
+        pedido.setId(pedido.getId());
         return true;
     }
 
@@ -150,13 +152,11 @@ public class Usuario extends Persona{
      * @return Una cadena que contiene la información del usuario.
      */
     @Override
-    public String toString() {//Metodo toString que ademas de mostrar la clase usuario muestra lo de persona por el llamado al super
-        return super.toString() + "Usuario{" +
-                "nombreUsuario='" + nombreUsuario + '\'' +
+    public String toString() {
+        return "pedidos=" + pedidos +
+                ", nombreUsuario='" + nombreUsuario + '\'' +
                 ", contrasenia='" + contrasenia + '\'' +
-                ", puntos=" + puntos +
                 ", monto=" + monto +
-                ", isAdmin=" + isAdmin +
                 '}';
     }
 }

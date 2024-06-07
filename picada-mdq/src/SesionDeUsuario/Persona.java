@@ -102,12 +102,12 @@ public class Persona {
      */
     @Override
     public String toString() {//Metodo toString para mostrar los datos de la clase persona
-        return "Persona{" +
+        return "{" +
                 "nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
                 ", calle='" + calle + '\'' +
                 ", numero=" + numero +
-                ", email='" + email + '\'' +
-                '}';
+                ", email='" + email + '\''
+                + ", ";
     }
 }

@@ -154,6 +154,8 @@ public class Ejecucion {
             }catch (Exception e){
                 System.out.println(e.getMessage() + "\n error en la persistencia del archivo de usuarios");
             }
+
+
         }while (!salir);
     }
 
@@ -232,7 +234,7 @@ public class Ejecucion {
 
                         }
                     }else{
-                        System.out.println("El pedido no se guardo con exito ");
+                        System.out.println("El pedido no se guardo con exito, monto insuficiente");
                     }
 
                     break;
